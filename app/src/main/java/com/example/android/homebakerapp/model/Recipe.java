@@ -1,29 +1,63 @@
 package com.example.android.homebakerapp.model;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.Index;
+import androidx.room.PrimaryKey;
+
+import java.io.Serializable;
 import java.util.List;
 
-public class Recipe {
+@Entity(tableName = "fav_recipes", // ROOM annotation; setting up table to store user's favourite recipes
+        // about indexing, ref. https://developer.android.com/training/data-storage/room/defining-data#column-indexing
+        indices = {
+            @Index(value = {"name"})
+        })
+public class Recipe implements Serializable {
+
+    // TODO
+    // CHECK: https://stackoverflow.com/questions/36879770/how-to-save-foreign-key-entities-using-spring-dao &&
+    // https://stackoverflow.com/questions/47511750/how-to-use-foreign-key-in-room-persistence-library
 
     private int id;
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "local_id")
+    private int localId;
     private String name;
+    @Ignore
     private List<Ingredient> ingredients;
+    @Ignore
     private List<Step> steps;
     private int servings;
     private String image;
+    @Ignore
     private List<Author> authors;
     private String type;
+    @ColumnInfo(name = "fav_flag")
+    private boolean isFavourite;
 
+    // constructor that will be used by ROOM
+    public Recipe(Integer id, boolean isFavourite) {
+        this.id = id;
+        this.isFavourite = isFavourite;
+    }
+
+    @Ignore
     public Recipe() {}
 
-    public Recipe(int id, String name, List<Ingredient> ingredients, List<Step> steps, int servings, List<Author> authors, String type) {
+    @Ignore
+    public Recipe(int id, int localId, String name, List<Ingredient> ingredients, List<Step> steps, int servings, List<Author> authors, String type, boolean isFavourite) {
         super();
         this.id = id;
+        this.localId = localId;
         this.name = name;
         this.ingredients = ingredients;
         this.steps = steps;
         this.servings = servings;
         this.authors = authors;
         this.type = type;
+        this.isFavourite = isFavourite;
     }
 
 
@@ -104,6 +138,16 @@ public class Recipe {
         this.type = type;
     }
 
+    public boolean isFavourite() {
+        return isFavourite;
+    }
 
+    public void setFavourite(boolean favourite) {
+        isFavourite = favourite;
+    }
+
+    public int getLocalId() {
+        return localId;
+    }
 }
 

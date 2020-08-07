@@ -1,19 +1,51 @@
 package com.example.android.homebakerapp;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import com.example.android.homebakerapp.model.Recipe;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
-public class RecipesScrollingActivity extends AppCompatActivity {
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+public class RecipesScrollingActivity extends AppCompatActivity implements MainRecyclerViewAdapter.ItemClickListener, Serializable {
+
+
+    private MainRecyclerViewAdapter adapter;
+    private Context mContext;
+
+    private ArrayList<String> imageURLData = new ArrayList<>(); // var used to store poster URL's as strings
+    private ArrayList<Recipe> data = new ArrayList<>(); // var used to store Film objects in our popular movie list
+
+    private String actionSortFlag = ""; // var used to store latest status of sorting of choice
+
+    // Create a ProgressBar variable to store a reference to the ProgressBar
+    private ProgressBar mLoadingIndicator;
+
+    // Create a variable to store a reference to the error message TextView
+    private TextView mErrorMessageDisplay;
+
+    // Create a variable to store a reference to the RecyclerView where film posters will appear
+    private RecyclerView recyclerView;
+
+    // Member variable for the Database
+    private AppDatabase mDb;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,4 +91,12 @@ public class RecipesScrollingActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    // method required in MainRecyclerViewAdapter
+    @Override
+    public void onItemClick(View view, int position) {
+
+    }
+
+
 }
