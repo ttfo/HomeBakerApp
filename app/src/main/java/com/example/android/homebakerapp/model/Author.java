@@ -3,6 +3,8 @@ package com.example.android.homebakerapp.model;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import static androidx.room.ForeignKey.CASCADE;
@@ -13,6 +15,12 @@ import static androidx.room.ForeignKey.CASCADE;
                         parentColumns = "local_id",
                         childColumns = "recipe_id",
                         onDelete = CASCADE)
+        },
+        indices = {
+                @Index(value = {"recipe_id"})
+                // If removing this row, when building below warning would show:
+                // warning: recipe_id column references a foreign key but it is not part of an index.
+                // This may trigger full table scans whenever parent table is modified so you are highly advised to create an index that covers this column.
         })
 public class Author {
 
@@ -25,6 +33,7 @@ public class Author {
     private String name;
     private String website;
 
+    @Ignore
     public Author() {};
 
     public Author(String name, String website) {
@@ -66,5 +75,12 @@ public class Author {
         return recipeId;
     }
 
+    public void setAuthorRecipeRelationshipId(int authorRecipeRelationshipId) {
+        this.authorRecipeRelationshipId = authorRecipeRelationshipId;
+    }
+
+    public void setRecipeId(int recipeId) {
+        this.recipeId = recipeId;
+    }
 }
 

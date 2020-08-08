@@ -4,17 +4,21 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverter;
 
 import static androidx.room.ForeignKey.CASCADE;
 
 @Entity(tableName = "ingredients",
-        foreignKeys ={
+        foreignKeys = {
                 @ForeignKey(entity = Recipe.class,
                         parentColumns = "local_id",
                         childColumns = "recipe_id",
                         onDelete = CASCADE)
+        },
+        indices = {
+            @Index(value = {"ingredient_name", "recipe_id"})
         })
 public class Ingredient implements IngredientType  {
 
@@ -74,5 +78,17 @@ public class Ingredient implements IngredientType  {
 
     public int getLocalId() {
         return localId;
+    }
+
+    public void setLocalId(int localId) {
+        this.localId = localId;
+    }
+
+    public int getRecipeId() {
+        return recipeId;
+    }
+
+    public void setRecipeId(int recipeId) {
+        this.recipeId = recipeId;
     }
 }

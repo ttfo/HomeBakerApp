@@ -15,6 +15,12 @@ import static androidx.room.ForeignKey.CASCADE;
             parentColumns = "local_id",
             childColumns = "recipe_id",
             onDelete = CASCADE)
+        },
+        indices = {
+                @Index(value = {"recipe_id"})
+                // If removing this row, when building below warning would show:
+                // warning: recipe_id column references a foreign key but it is not part of an index.
+                // This may trigger full table scans whenever parent table is modified so you are highly advised to create an index that covers this column.
         })
 public class Step {
 
@@ -94,6 +100,14 @@ public class Step {
 
     public int getRecipeId() {
         return recipeId;
+    }
+
+    public void setLocalId(int localId) {
+        this.localId = localId;
+    }
+
+    public void setRecipeId(int recipeId) {
+        this.recipeId = recipeId;
     }
 }
 

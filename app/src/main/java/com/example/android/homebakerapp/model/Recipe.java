@@ -12,7 +12,7 @@ import java.util.List;
 @Entity(tableName = "recipes", // ROOM annotation; setting up table to store user's favourite recipes
         // about indexing, ref. https://developer.android.com/training/data-storage/room/defining-data#column-indexing
         indices = {
-            @Index(value = {"name"})
+            @Index(value = {"name", "local_id"})
         })
 public class Recipe implements Serializable {
 
@@ -148,6 +148,10 @@ public class Recipe implements Serializable {
 
     public int getLocalId() {
         return localId;
+    }
+
+    public void setLocalId(int localId) {
+        this.localId = localId;
     }
 }
 

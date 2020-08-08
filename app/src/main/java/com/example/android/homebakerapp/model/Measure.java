@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import java.security.InvalidParameterException;
@@ -21,6 +22,12 @@ import static androidx.room.ForeignKey.CASCADE;
                         parentColumns = "local_id",
                         childColumns = "ingredient_id",
                         onDelete = CASCADE)
+        },
+        indices = {
+                @Index(value = {"ingredient_id"})
+                // If removing this row, when building below warning would show:
+                // warning: recipe_id column references a foreign key but it is not part of an index.
+                // This may trigger full table scans whenever parent table is modified so you are highly advised to create an index that covers this column.
         })
 public class Measure implements MeasurementSystem {
 
@@ -98,7 +105,7 @@ public class Measure implements MeasurementSystem {
     @Ignore
     private static List<String> allMeasurementUnitsAsList = mergeAllMeasurementUnits();
 
-
+    @Ignore
     public Measure() {}
 
     // Constructor
@@ -242,4 +249,19 @@ public class Measure implements MeasurementSystem {
         this.measurementRefUnit = measurementRefUnit;
     }
 
+    public int getLocalId() {
+        return localId;
+    }
+
+    public void setLocalId(int localId) {
+        this.localId = localId;
+    }
+
+    public int getIngredientId() {
+        return ingredientId;
+    }
+
+    public void setIngredientId(int ingredientId) {
+        this.ingredientId = ingredientId;
+    }
 }
