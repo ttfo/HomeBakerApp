@@ -46,7 +46,7 @@ public class Measure implements MeasurementSystem {
     private String measurementRefUnit;
 
     @Ignore
-    MeasurementSystem.measurmentLocalSystem measurmentLocalSystem = null; // Check interface for details
+    MeasurementSystem.measurementLocalSystem measurementLocalSystem = null; // Check interface for details
     @Ignore
     MeasurementSystem.measurementType measurementType = null; // Check interface for details
 
@@ -119,27 +119,27 @@ public class Measure implements MeasurementSystem {
             // defining what measurement system is being used, based on measurement unit provided
             if (measurementUnitUsVolType.contains(measurementUnit)) {
                 this.setMeasurementType(com.example.android.homebakerapp.model.MeasurementSystem.measurementType.volume);
-                this.setMeasurmentLocalSystem(com.example.android.homebakerapp.model.MeasurementSystem.measurmentLocalSystem.uscs);
+                this.setMeasurementLocalSystem(com.example.android.homebakerapp.model.MeasurementSystem.measurementLocalSystem.uscs);
                 this.measurementValueRefUnit = measurementUnitUsVol.get(measurementUnit)*measurementValue;
                 this.measurementRefUnit = refUnitUsVol;
             } else if (measurementUnitUsWeightType.contains(measurementUnit)) {
                 this.setMeasurementType(com.example.android.homebakerapp.model.MeasurementSystem.measurementType.weight);
-                this.setMeasurmentLocalSystem(com.example.android.homebakerapp.model.MeasurementSystem.measurmentLocalSystem.uscs);
+                this.setMeasurementLocalSystem(com.example.android.homebakerapp.model.MeasurementSystem.measurementLocalSystem.uscs);
                 this.measurementValueRefUnit = measurementUnitUsWeight.get(measurementUnit)*measurementValue;
                 this.measurementRefUnit = refUnitUsWeight;
             } else if (measurementUnitMetrVolType.contains(measurementUnit)) {
                 this.setMeasurementType(com.example.android.homebakerapp.model.MeasurementSystem.measurementType.volume);
-                this.setMeasurmentLocalSystem(com.example.android.homebakerapp.model.MeasurementSystem.measurmentLocalSystem.metric);
+                this.setMeasurementLocalSystem(com.example.android.homebakerapp.model.MeasurementSystem.measurementLocalSystem.metric);
                 this.measurementValueRefUnit = measurementUnitMetrVol.get(measurementUnit)*measurementValue;
                 this.measurementRefUnit = refUnitMetrVol;
             } else if (measurementUnitMetrWeightType.contains(measurementUnit)) {
                 this.setMeasurementType(com.example.android.homebakerapp.model.MeasurementSystem.measurementType.weight);
-                this.setMeasurmentLocalSystem(com.example.android.homebakerapp.model.MeasurementSystem.measurmentLocalSystem.metric);
+                this.setMeasurementLocalSystem(com.example.android.homebakerapp.model.MeasurementSystem.measurementLocalSystem.metric);
                 this.measurementValueRefUnit = measurementUnitMetrWeight.get(measurementUnit)*measurementValue;
                 this.measurementRefUnit = refUnitMetrWeight;
             } else if (measurementUnitGeneric.contains(measurementUnit)) {
                 this.setMeasurementType(com.example.android.homebakerapp.model.MeasurementSystem.measurementType.generic);
-                this.setMeasurmentLocalSystem(com.example.android.homebakerapp.model.MeasurementSystem.measurmentLocalSystem.generic);
+                this.setMeasurementLocalSystem(com.example.android.homebakerapp.model.MeasurementSystem.measurementLocalSystem.generic);
             }
 
             return;
@@ -202,8 +202,8 @@ public class Measure implements MeasurementSystem {
 
     // interface method
     @Override
-    public void setMeasurmentLocalSystem(com.example.android.homebakerapp.model.MeasurementSystem.measurmentLocalSystem measurmentLocalSystem) {
-        this.measurmentLocalSystem = measurmentLocalSystem;
+    public void setMeasurementLocalSystem(com.example.android.homebakerapp.model.MeasurementSystem.measurementLocalSystem measurementLocalSystem) {
+        this.measurementLocalSystem = measurementLocalSystem;
     }
 
 
@@ -214,8 +214,8 @@ public class Measure implements MeasurementSystem {
     }
 
 
-    public MeasurementSystem.measurmentLocalSystem getMeasurmentLocalSystem() {
-        return measurmentLocalSystem;
+    public MeasurementSystem.measurementLocalSystem getMeasurementLocalSystem() {
+        return measurementLocalSystem;
     }
 
 
@@ -264,4 +264,5 @@ public class Measure implements MeasurementSystem {
     public void setIngredientId(int ingredientId) {
         this.ingredientId = ingredientId;
     }
+
 }

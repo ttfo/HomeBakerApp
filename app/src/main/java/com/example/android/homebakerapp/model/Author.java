@@ -82,5 +82,6 @@ public class Author {
     public void setRecipeId(int recipeId) {
         this.recipeId = recipeId;
     }
+
 }
 

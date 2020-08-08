@@ -92,4 +92,5 @@ public class Ingredient implements IngredientType  {
     public void setRecipeId(int recipeId) {
         this.recipeId = recipeId;
     }
+
 }

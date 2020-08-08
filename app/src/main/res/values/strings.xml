@@ -5,4 +5,11 @@
 
     <string name="recipe_image_content_description">Recipe image</string>
 
+    <string name="HOMEBAKER_CLOUD_BASE_URL">https://sbs19016-homebaker-webapp.azurewebsites.net</string>
+    <string name="HOMEBAKER_RECIPES_ENDPOINT">recipes</string>
+    <string name="HOMEBAKER_RECIPE_ENDPOINT">recipe</string>
+    <string name="HOMEBAKER_RECIPE_ENDPOINT_Q_PARAM">id</string>
+    <string name="HOMEBAKER_INGREDIENTS_ENDPOINT">ingredients</string>
+    <string name="HOMEBAKER_INGREDIENTS_ENDPOINT_Q_PARAM">recipe-id</string>
+
 </resources>

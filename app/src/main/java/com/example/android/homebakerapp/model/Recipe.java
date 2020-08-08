@@ -153,5 +153,6 @@ public class Recipe implements Serializable {
     public void setLocalId(int localId) {
         this.localId = localId;
     }
+
 }
 
