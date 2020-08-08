@@ -3,6 +3,7 @@ package com.example.android.homebakerapp;
 import android.content.Context;
 import android.os.Bundle;
 
+import com.example.android.homebakerapp.db.AppDatabase;
 import com.example.android.homebakerapp.model.Recipe;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;

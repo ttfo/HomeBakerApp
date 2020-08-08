@@ -15,11 +15,11 @@ import java.util.List;
 @Dao
 public interface RecipeDao {
 
-    // TODO
+    // About foreign keys in DAO --
     // CHECK: https://stackoverflow.com/questions/36879770/how-to-save-foreign-key-entities-using-spring-dao &&
     // https://stackoverflow.com/questions/47511750/how-to-use-foreign-key-in-room-persistence-library
 
-    @Query("SELECT * FROM fav_recipes ORDER BY id")
+    @Query("SELECT * FROM recipes ORDER BY local_id")
     LiveData<List<Recipe>> loadAllRecipes();
 
     @Insert
@@ -32,10 +32,10 @@ public interface RecipeDao {
     void deleteRecipe(Recipe recipe);
 
     // REF. https://www.youtube.com/watch?time_continue=38&v=K3Ul4pQ7tYw&feature=emb_logo
-    @Query("SELECT * FROM fav_recipes WHERE id = :id") // colon is used to refer to the param provided
+    @Query("SELECT * FROM recipes WHERE local_id = :id") // colon is used to refer to the param provided
     LiveData<Recipe> loadRecipeById(int id);
 
-    @Query("SELECT EXISTS(SELECT * FROM fav_recipes WHERE id = :id)")
+    @Query("SELECT EXISTS(SELECT * FROM recipes WHERE local_id = :id)")
     Boolean isRecipeInFavTable(int id);
 
 }

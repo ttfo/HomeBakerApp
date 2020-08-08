@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey;
 import java.io.Serializable;
 import java.util.List;
 
-@Entity(tableName = "fav_recipes", // ROOM annotation; setting up table to store user's favourite recipes
+@Entity(tableName = "recipes", // ROOM annotation; setting up table to store user's favourite recipes
         // about indexing, ref. https://developer.android.com/training/data-storage/room/defining-data#column-indexing
         indices = {
             @Index(value = {"name"})

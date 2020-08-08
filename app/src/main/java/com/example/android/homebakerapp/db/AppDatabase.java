@@ -6,13 +6,19 @@ import android.util.Log;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.TypeConverters;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.example.android.homebakerapp.model.Author;
+import com.example.android.homebakerapp.model.Ingredient;
+import com.example.android.homebakerapp.model.Measure;
 import com.example.android.homebakerapp.model.Recipe;
+import com.example.android.homebakerapp.model.Step;
 
-// most code below from T09b.02
-@Database(entities = {Recipe.class}, version = 1, exportSchema = false)
+// REF. https://developer.android.com/reference/android/arch/persistence/room/Database.html
+@Database(entities = {Recipe.class, Step.class, Ingredient.class, Author.class, Measure.class}, version = 1, exportSchema = false)
+@TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
 
     private static final String LOG_TAG = AppDatabase.class.getSimpleName();
@@ -34,5 +40,9 @@ public abstract class AppDatabase extends RoomDatabase {
     }
 
     public abstract RecipeDao recipeDao();
+    public abstract StepDao stepDao();
+    public abstract IngredientDao ingredientDao();
+    public abstract AuthorDao authorDao();
+    public abstract MeasureDao measureDao();
 
 }

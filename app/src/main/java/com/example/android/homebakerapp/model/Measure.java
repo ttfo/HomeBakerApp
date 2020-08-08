@@ -1,5 +1,11 @@
 package com.example.android.homebakerapp.model;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,49 +13,90 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static androidx.room.ForeignKey.CASCADE;
+
+@Entity(tableName = "measures",
+        foreignKeys ={
+                @ForeignKey(entity = Ingredient.class,
+                        parentColumns = "local_id",
+                        childColumns = "ingredient_id",
+                        onDelete = CASCADE)
+        })
 public class Measure implements MeasurementSystem {
 
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "local_id")
+    private int localId;
+    @ColumnInfo(name = "ingredient_id")
+    private int ingredientId;
+    @ColumnInfo(name = "measurement_value")
+    private double measurementValue;
+    @ColumnInfo(name = "measurement_unit")
+    private String measurementUnit;
+    @ColumnInfo(name = " measurement_value_ref_unit")
+    private double measurementValueRefUnit; // value in reference unit
+    @ColumnInfo(name = "measurement_ref_unit")
+    private String measurementRefUnit;
+
+    @Ignore
     MeasurementSystem.measurmentLocalSystem measurmentLocalSystem = null; // Check interface for details
+    @Ignore
     MeasurementSystem.measurementType measurementType = null; // Check interface for details
 
+    @Ignore
     private static double ounceToGram = 28.35; // 1 ounce = 28.35 gr
+    @Ignore
     private static double fluidOunceToML = 29.57; // 1 fluid ounce = 29.57 ml
 
+    @Ignore
     private static String refUnitUsVol = "flOZ";
+    @Ignore
     private static String refUnitUsWeight = "OZ";
+    @Ignore
     private static String refUnitMetrVol = "ml";
+    @Ignore
     private static String refUnitMetrWeight = "G";
 
+    @Ignore
     private static List<String> measurementUnitUsVolType = Arrays.asList("TSP", "TBLSP", "flOZ", "CUP", "pint");
+    @Ignore
     private static List<Double> measurementUnitUsVolInFlOz = Arrays.asList(0.17, 0.5, 1.0, 8.0, 16.0); // flOz is taken as reference unit
 
+    @Ignore
     private static HashMap<String, Double> measurementUnitUsVol = buildMeasHashMap(measurementUnitUsVolType, measurementUnitUsVolInFlOz);
 
+    @Ignore
     private static List<String> measurementUnitUsWeightType = Arrays.asList("OZ", "lb");
+    @Ignore
     private static List<Double> measurementUnitUsWeightInOz = Arrays.asList(1.0, 16.0); // Oz is taken as reference unit
 
+    @Ignore
     private static HashMap<String, Double> measurementUnitUsWeight = buildMeasHashMap(measurementUnitUsWeightType, measurementUnitUsWeightInOz);
 
+    @Ignore
     private static List<String> measurementUnitMetrVolType = Arrays.asList("ml", "lt");
+    @Ignore
     private static List<Double> measurementUnitMetrVolInMl = Arrays.asList(1.0, 1000.0); // ml is taken as reference unit
 
+    @Ignore
     private static HashMap<String, Double> measurementUnitMetrVol = buildMeasHashMap(measurementUnitMetrVolType, measurementUnitMetrVolInMl);
 
+    @Ignore
     private static List<String> measurementUnitMetrWeightType = Arrays.asList("G", "K");
+    @Ignore
     private static List<Double> measurementUnitMetrWeightInGr = Arrays.asList(1.0, 1000.0); // gr is taken as reference unit
 
+    @Ignore
     private static HashMap<String, Double> measurementUnitMetrWeight = buildMeasHashMap(measurementUnitMetrWeightType, measurementUnitMetrWeightInGr);
 
+    @Ignore
     private static List<String> measurementUnitGeneric = Arrays.asList("UNIT");
 
+    @Ignore
     private static List<List<String>> allMeasurementUnits = Arrays.asList(measurementUnitUsVolType, measurementUnitUsWeightType, measurementUnitMetrVolType, measurementUnitMetrWeightType, measurementUnitGeneric);
 
+    @Ignore
     private static List<String> allMeasurementUnitsAsList = mergeAllMeasurementUnits();
-
-    private double measurementValue;
-    private String measurementUnit;
-    private double measurementValueRefUnit; // value in reference unit
-    private String measurementRefUnit;
 
 
     public Measure() {}
