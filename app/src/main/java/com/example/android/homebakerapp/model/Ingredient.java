@@ -18,7 +18,8 @@ import static androidx.room.ForeignKey.CASCADE;
                         onDelete = CASCADE)
         },
         indices = {
-            @Index(value = {"ingredient_name", "recipe_id"})
+            // Check https://stackoverflow.com/questions/58593506/room-compile-problem-column-references-a-foreign-key-but-it-is-not-part-of-an
+            @Index(value = {"recipe_id"}), @Index(value = {"ingredient_name"})
         })
 public class Ingredient implements IngredientType  {
 

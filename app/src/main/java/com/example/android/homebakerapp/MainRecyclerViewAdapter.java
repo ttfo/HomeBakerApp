@@ -41,9 +41,9 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerVi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         // REF. https://stackoverflow.com/questions/43510744/how-to-pass-context-to-picasso
-        Picasso.with(holder.itemView.getContext())
-                .load(mData.get(position).getPosterURLAsString()) // TODO
-                .into(holder.myImageView);
+//        Picasso.with(holder.itemView.getContext())
+//                .load(mData.get(position).getPosterURLAsString()) // TODO
+//                .into(holder.myImageView);
 
     }
 
