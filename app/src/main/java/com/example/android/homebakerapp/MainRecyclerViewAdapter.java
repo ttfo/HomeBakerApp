@@ -41,9 +41,30 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerVi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         // REF. https://stackoverflow.com/questions/43510744/how-to-pass-context-to-picasso
-        Picasso.with(holder.itemView.getContext())
-                .load(mData.get(position).getImage()) // Calls method Recipe.getImage()
-                .into(holder.myImageView);
+        // && https://www.journaldev.com/13759/android-picasso-tutorial#android-picasso-8211-loading-image-from-file
+
+        if (mData.get(position).getType().equals("savoury")) {
+
+            Picasso.with(holder.itemView.getContext())
+                    .load(mData.get(position).getImage()) // Calls method Recipe.getImage()
+                    .placeholder(R.drawable.pizza)
+                    .into(holder.myImageView);
+
+        } else if (mData.get(position).getType().equals("sweet")) {
+
+            Picasso.with(holder.itemView.getContext())
+                    .load(mData.get(position).getImage()) // Calls method Recipe.getImage()
+                    .placeholder(R.drawable.pastry_cherry)
+                    .into(holder.myImageView);
+
+        } else {
+
+            Picasso.with(holder.itemView.getContext())
+                    .load(mData.get(position).getImage()) // Calls method Recipe.getImage()
+                    .placeholder(R.drawable.meat_pie) // TODO replace with question mark icon
+                    .into(holder.myImageView);
+
+        }
 
     }
 

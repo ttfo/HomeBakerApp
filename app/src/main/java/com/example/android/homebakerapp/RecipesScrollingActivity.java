@@ -117,7 +117,10 @@ public class RecipesScrollingActivity extends AppCompatActivity implements MainR
 
     }
 
-
+    /**
+     * Sub-class the loads data asynchronously from the cloud
+     * onPreExecute(), doInBackground() and onPostExecute() methods are defined in here
+     */
     public class myBookOfRecipes extends AsyncTask<URL, Void, List<Recipe>> {
 
         URL recipesBookURL;
