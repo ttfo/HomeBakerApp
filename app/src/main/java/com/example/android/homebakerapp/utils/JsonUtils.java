@@ -1,7 +1,5 @@
 package com.example.android.homebakerapp.utils;
 
-import android.util.Log;
-
 import com.example.android.homebakerapp.db.Converters;
 import com.example.android.homebakerapp.model.Author;
 import com.example.android.homebakerapp.model.Ingredient;
@@ -13,11 +11,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class JsonUtils {
+
+    // Text placeholders for default imagery when no custom image is found for recipe
+    private static String savouryRecipeImagePlaceholder = "SAVOURY_RECIPE_IMAGE_PLACEHOLDER";
+    private static String sweetRecipeImagePlaceholder = "SWEET_RECIPE_IMAGE_PLACEHOLDER";
 
     public static List<Recipe> parseRecipesJson(String json) throws JSONException {
 
@@ -38,10 +39,10 @@ public class JsonUtils {
                 recipe.setImage(recipeInList.getString("image"));
             } else {
                 if (recipeInList.getString("type").equals("savoury")) {
-                    // TODO get default image from resources
+                    recipe.setImage(savouryRecipeImagePlaceholder);
                 }
                 if (recipeInList.getString("type").equals("sweet")) {
-                    // TODO get default image from resources
+                    recipe.setImage(sweetRecipeImagePlaceholder);
                 }
             }
 
