@@ -23,7 +23,7 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerVi
     private ItemClickListener mClickListener;
 
     // data is passed into the constructor
-    MainRecyclerViewAdapter(Context context, ArrayList<Recipe> data) {
+    public MainRecyclerViewAdapter(Context context, ArrayList<Recipe> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
     }

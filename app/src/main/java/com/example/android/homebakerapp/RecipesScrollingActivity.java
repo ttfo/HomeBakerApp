@@ -18,9 +18,11 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -37,10 +39,9 @@ import java.util.List;
 public class RecipesScrollingActivity extends AppCompatActivity implements MainRecyclerViewAdapter.ItemClickListener, Serializable {
 
 
-    private MainRecyclerViewAdapter adapter;
     private Context mContext;
-
     private ArrayList<Recipe> data = new ArrayList<>(); // var used to store Recipe objects in list retrieved from the cloud
+    private MainRecyclerViewAdapter adapter;
 
     private String actionSortFlag = ""; // var used to store latest status of sorting of choice
 
@@ -50,7 +51,7 @@ public class RecipesScrollingActivity extends AppCompatActivity implements MainR
     // Create a variable to store a reference to the error message TextView
     private TextView mErrorMessageDisplay;
 
-    // Create a variable to store a reference to the RecyclerView where film posters will appear
+    // Create a variable to store a reference to the RecyclerView where recipe images or placeholders will appear
     private RecyclerView recyclerView;
 
     // Member variable for the Database
@@ -64,9 +65,6 @@ public class RecipesScrollingActivity extends AppCompatActivity implements MainR
 
         mContext = RecipesScrollingActivity.this;
         setContentView(R.layout.activity_scrolling);
-
-        // Get a reference to the RecyclerView using findViewById
-        recyclerView = findViewById(R.id.rv_recipes_list);
 
         // Get a reference to the ProgressBar using findViewById
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
@@ -104,10 +102,6 @@ public class RecipesScrollingActivity extends AppCompatActivity implements MainR
             e.printStackTrace();
         }
 
-        // set up the RecyclerView
-        int numberOfColumns = 2;
-        recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
-
         adapterSetUp(mContext, data);
 
         // TODO show more columns if on tablet
@@ -115,35 +109,6 @@ public class RecipesScrollingActivity extends AppCompatActivity implements MainR
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_scrolling, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    // method required in MainRecyclerViewAdapter
-    @Override
-    public void onItemClick(View view, int position) {
-
-        Log.i("TAG", "You have clicked: " + adapter.getItem(position).getName() +
-                ", at cell position " + position + " in UI grid.");
-
-    }
 
     /**
      * Sub-class the loads data asynchronously from the cloud
@@ -234,6 +199,39 @@ public class RecipesScrollingActivity extends AppCompatActivity implements MainR
     }
 
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_scrolling, menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    // method required in MainRecyclerViewAdapter
+    @Override
+    public void onItemClick(View view, int position) {
+
+        Log.i("TAG", "You have clicked: " + adapter.getItem(position).getName() +
+                ", at cell position " + position + " in UI grid.");
+
+    }
+
+
     /**
      * This method will make the View for the JSON data visible and
      * hide the error message.
@@ -244,6 +242,7 @@ public class RecipesScrollingActivity extends AppCompatActivity implements MainR
         // Then, make sure the JSON data is visible
         recyclerView.setVisibility(View.VISIBLE);
     }
+
 
     /**
      * This method will make the error message visible and hide the JSON View.
@@ -257,9 +256,17 @@ public class RecipesScrollingActivity extends AppCompatActivity implements MainR
 
 
     public void adapterSetUp(Context context, ArrayList<Recipe> myList) {
+
         adapter = new MainRecyclerViewAdapter(context, myList);
         adapter.setClickListener(this);
+
+        recyclerView = (RecyclerView) findViewById(R.id.rv_recipes_list);
         recyclerView.setAdapter(adapter);
+
+        // set up the RecyclerView layout
+        int numberOfColumns = 2;
+        recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
+
     }
 
 
