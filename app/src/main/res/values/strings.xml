@@ -14,4 +14,8 @@
     <string name="HOMEBAKER_INGREDIENTS_ENDPOINT">ingredients</string>
     <string name="HOMEBAKER_INGREDIENTS_ENDPOINT_Q_PARAM">recipe-id</string>
 
+    <!--    ERRORS    -->
+
+    <string name="error_message_generic">Failed to get results. Please try again!</string>
+
 </resources>

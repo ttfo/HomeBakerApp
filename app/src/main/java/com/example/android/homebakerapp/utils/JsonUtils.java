@@ -54,7 +54,7 @@ public class JsonUtils {
 
             for (int j = 0; j < arrayOfIngredientsJson.length(); j++) {
 
-                JSONObject ingredientInList = arrayOfIngredientsJson.getJSONObject(i);
+                JSONObject ingredientInList = arrayOfIngredientsJson.getJSONObject(j);
                 Ingredient ingredient = new Ingredient(); // create a new ingredient object for each element in the array list
 
                 ingredient.setIngredientName(ingredientInList.getString("ingredientName"));
@@ -83,7 +83,7 @@ public class JsonUtils {
 
             for (int k = 0; k < arrayOfStepsJson.length(); k++) {
 
-                JSONObject stepInList = arrayOfStepsJson.getJSONObject(i);
+                JSONObject stepInList = arrayOfStepsJson.getJSONObject(k);
                 Step step = new Step(); // create a new step object for each element in the array list
 
                 step.setId(stepInList.getInt("id"));
@@ -102,7 +102,7 @@ public class JsonUtils {
 
             for (int l = 0; l < arrayOfAuthorsJson.length(); l++) {
 
-                JSONObject authorInList = arrayOfAuthorsJson.getJSONObject(i);
+                JSONObject authorInList = arrayOfAuthorsJson.getJSONObject(l);
                 Author author = new Author(); // create a new recipe object for each element in the array list
 
                 author.setId(authorInList.getInt("id"));

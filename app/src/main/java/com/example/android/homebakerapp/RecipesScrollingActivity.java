@@ -14,6 +14,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -62,6 +63,18 @@ public class RecipesScrollingActivity extends AppCompatActivity implements MainR
         super.onCreate(savedInstanceState);
 
         mContext = RecipesScrollingActivity.this;
+        setContentView(R.layout.activity_scrolling);
+
+        // Get a reference to the RecyclerView using findViewById
+        recyclerView = findViewById(R.id.rv_recipes_list);
+
+        // Get a reference to the ProgressBar using findViewById
+        mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
+
+        // Get a reference to the error TextView using findViewById
+        mErrorMessageDisplay = (TextView) findViewById(R.id.tv_error_message_display);
+
+        mDb = AppDatabase.getInstance(getApplicationContext());
 
         setContentView(R.layout.activity_scrolling);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -75,19 +88,31 @@ public class RecipesScrollingActivity extends AppCompatActivity implements MainR
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                // TODO open favourite list on button click
+
+                adapterSetUp(mContext, data);
+                Log.i("BUTTON_CLICK", data.toString());
+
             }
         });
 
 
+        try {
+            populateUI();
+            Log.i("TAG", "UI populated");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // set up the RecyclerView
+        int numberOfColumns = 2;
+        recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
+
+        adapterSetUp(mContext, data);
+
         // TODO show more columns if on tablet
         // REF. https://stackoverflow.com/questions/29579811/changing-number-of-columns-with-gridlayoutmanager-and-recyclerview/32877124
 
-    }
-
-    public void adapterSetUp(Context context, ArrayList<Recipe> myList) {
-        adapter = new MainRecyclerViewAdapter(context, myList);
-        adapter.setClickListener(this);
-        recyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -114,6 +139,9 @@ public class RecipesScrollingActivity extends AppCompatActivity implements MainR
     // method required in MainRecyclerViewAdapter
     @Override
     public void onItemClick(View view, int position) {
+
+        Log.i("TAG", "You have clicked: " + adapter.getItem(position).getName() +
+                ", at cell position " + position + " in UI grid.");
 
     }
 
@@ -169,6 +197,7 @@ public class RecipesScrollingActivity extends AppCompatActivity implements MainR
 
             if (myBookOfRecipes == null) {
 
+                Log.i("TAG", "myBookOfRecipes == null");
                 return null;
 
             } else {
@@ -176,7 +205,9 @@ public class RecipesScrollingActivity extends AppCompatActivity implements MainR
                 // Populates UI with recipes data
                 for (Recipe recipe : myBookOfRecipes) {
                     data.add(recipe); // now data ArrayList holds list of recipes
+                    Log.i("TAG", recipe.getName());
                 }
+                Log.i("TAG", data.toString());
 
             }
 
@@ -206,8 +237,6 @@ public class RecipesScrollingActivity extends AppCompatActivity implements MainR
     /**
      * This method will make the View for the JSON data visible and
      * hide the error message.
-     * Since it is okay to redundantly set the visibility of a View, we don't
-     * need to check whether each view is currently visible or invisible.
      */
     private void showJsonDataView() {
         // First, make sure the error is invisible
@@ -218,8 +247,6 @@ public class RecipesScrollingActivity extends AppCompatActivity implements MainR
 
     /**
      * This method will make the error message visible and hide the JSON View.
-     * Since it is okay to redundantly set the visibility of a View, we don't
-     * need to check whether each view is currently visible or invisible.
      */
     private void showErrorMessage() {
         // First, hide the currently visible data
@@ -228,5 +255,21 @@ public class RecipesScrollingActivity extends AppCompatActivity implements MainR
         mErrorMessageDisplay.setVisibility(View.VISIBLE);
     }
 
+
+    public void adapterSetUp(Context context, ArrayList<Recipe> myList) {
+        adapter = new MainRecyclerViewAdapter(context, myList);
+        adapter.setClickListener(this);
+        recyclerView.setAdapter(adapter);
+    }
+
+
+    private void populateUI() throws IOException {
+
+        myBookOfRecipes mBOF = new myBookOfRecipes();
+        mBOF.execute(mBOF.getBookOfRecipesURL());
+
+        Log.i("URL", mBOF.getBookOfRecipesURL().toString());
+
+    }
 
 }
