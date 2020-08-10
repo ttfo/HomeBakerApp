@@ -34,6 +34,7 @@ public class JsonUtils {
 
             recipe.setId(recipeInList.getInt("id"));
             recipe.setName(recipeInList.getString("name"));
+            recipe.setNotes(recipeInList.getString("notes"));
             recipe.setServings(recipeInList.getInt("servings"));
             if (!recipeInList.getString("image").isEmpty()) {
                 recipe.setImage(recipeInList.getString("image"));

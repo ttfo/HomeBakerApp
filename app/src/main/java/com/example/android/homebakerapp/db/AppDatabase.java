@@ -17,7 +17,7 @@ import com.example.android.homebakerapp.model.Recipe;
 import com.example.android.homebakerapp.model.Step;
 
 // REF. https://developer.android.com/reference/android/arch/persistence/room/Database.html
-@Database(entities = {Recipe.class, Step.class, Ingredient.class, Author.class, Measure.class}, version = 1, exportSchema = false)
+@Database(entities = {Recipe.class, Step.class, Ingredient.class, Author.class, Measure.class}, version = 2, exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -32,6 +32,7 @@ public abstract class AppDatabase extends RoomDatabase {
                 Log.d(LOG_TAG, "Creating new database instance");
                 sInstance = Room.databaseBuilder(context.getApplicationContext(),
                         AppDatabase.class, AppDatabase.DATABASE_NAME)
+                        .addMigrations(MIGRATION_1_2) // REF. https://medium.com/androiddevelopers/understanding-migrations-with-room-f01e04b07929
                         .build();
             }
         }
@@ -45,4 +46,11 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract AuthorDao authorDao();
     public abstract MeasureDao measureDao();
 
+    // REF. https://medium.com/androiddevelopers/understanding-migrations-with-room-f01e04b07929
+    static final Migration MIGRATION_1_2 = new Migration(1, 2) {
+        @Override
+        public void migrate(SupportSQLiteDatabase database) {
+            database.execSQL("ALTER TABLE recipes ADD COLUMN notes VARCHAR(65535)");
+        }
+    };
 }

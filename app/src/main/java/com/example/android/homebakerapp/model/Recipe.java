@@ -36,6 +36,7 @@ public class Recipe implements Serializable {
     private String type;
     @ColumnInfo(name = "fav_flag")
     private boolean isFavourite;
+    private String notes;
 
     // constructor that will be used by ROOM
     public Recipe(Integer id, boolean isFavourite) {
@@ -47,7 +48,8 @@ public class Recipe implements Serializable {
     public Recipe() {}
 
     @Ignore
-    public Recipe(int id, int localId, String name, List<Ingredient> ingredients, List<Step> steps, int servings, List<Author> authors, String type, boolean isFavourite) {
+    public Recipe(int id, int localId, String name, List<Ingredient> ingredients, List<Step> steps,
+                  int servings, List<Author> authors, String type, boolean isFavourite, String notes) {
         super();
         this.id = id;
         this.localId = localId;
@@ -58,6 +60,7 @@ public class Recipe implements Serializable {
         this.authors = authors;
         this.type = type;
         this.isFavourite = isFavourite;
+        this.notes = notes;
     }
 
 
@@ -154,5 +157,12 @@ public class Recipe implements Serializable {
         this.localId = localId;
     }
 
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
 }
 

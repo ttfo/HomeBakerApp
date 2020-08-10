@@ -231,7 +231,7 @@ public class RecipesScrollingActivity extends AppCompatActivity implements MainR
         Log.i("TAG", "You have clicked: " + adapter.getItem(position).getName() +
                 ", at cell position " + position + " in UI grid.");
 
-        Intent childActivityIntent = new Intent(RecipesScrollingActivity.this, StepListActivity.class);
+        Intent childActivityIntent = new Intent(RecipesScrollingActivity.this, RecipeDetailsActivity.class);
 
         // REF. https://stackoverflow.com/questions/2736389/how-to-pass-an-object-from-one-activity-to-another-on-android
         childActivityIntent.putExtra(getResources().getString(R.string.recipe_object_label), (Serializable) adapter.getItem(position));

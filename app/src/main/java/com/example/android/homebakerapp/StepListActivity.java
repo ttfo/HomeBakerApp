@@ -38,7 +38,7 @@ public class StepListActivity extends AppCompatActivity {
      */
     private boolean mTwoPane;
 
-    // New Film object to store our movie details
+    // New Recipe object to retrieve recipe details from Intent
     private Recipe clickedRecipeObj = new Recipe();
 
     @Override
@@ -50,9 +50,8 @@ public class StepListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
-
+        // @TODO fix to get intent from RecipeDetailsActivity
         Intent recipeClickedIntent = getIntent();
-
         if (recipeClickedIntent.hasExtra(getResources().getString(R.string.recipe_object_label))) {
             populateUI();
         }
@@ -155,10 +154,11 @@ public class StepListActivity extends AppCompatActivity {
 
 
     private void populateUI() {
+
+        // @TODO fix to get intent from RecipeDetailsActivity
         // REF. https://stackoverflow.com/questions/2736389/how-to-pass-an-object-from-one-activity-to-another-on-android
         clickedRecipeObj = (Recipe) getIntent().getSerializableExtra(getResources().getString(R.string.recipe_object_label));
-
-        setTitle(clickedRecipeObj.getName());
+        setTitle(clickedRecipeObj.getName() + ": steps");
     }
 
 }
