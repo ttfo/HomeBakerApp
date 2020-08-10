@@ -102,7 +102,7 @@ public class RecipesScrollingActivity extends AppCompatActivity implements MainR
             e.printStackTrace();
         }
 
-        adapterSetUp(mContext, data);
+        adapterSetUp(mContext, data); // also called from onPostExecute, so that data loads when app is launched
 
         // TODO show more columns if on tablet
         // REF. https://stackoverflow.com/questions/29579811/changing-number-of-columns-with-gridlayoutmanager-and-recyclerview/32877124
@@ -186,6 +186,7 @@ public class RecipesScrollingActivity extends AppCompatActivity implements MainR
             if (myBookOfRecipes != null) {
                 if (!myBookOfRecipes.isEmpty()) {
                     // Call showJsonDataView if we have valid, non-null results
+                    adapterSetUp(mContext, data);
                     showJsonDataView();
 
                 } else {

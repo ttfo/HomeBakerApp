@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -39,6 +40,8 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerVi
     // binds the data to the ImageView in each cell
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
+        holder.myTextView.setText(mData.get(position).getName()); // binds recipes names
 
         // REF. https://stackoverflow.com/questions/43510744/how-to-pass-context-to-picasso
         // && https://www.journaldev.com/13759/android-picasso-tutorial#android-picasso-8211-loading-image-from-file
@@ -77,12 +80,13 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerVi
 
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        //TextView myTextView;
+        TextView myTextView;
         ImageView myImageView;
 
         ViewHolder(View itemView) {
             super(itemView);
             myImageView = itemView.findViewById(R.id.recipe_image_iv);
+            myTextView = itemView.findViewById(R.id.recipe_name_tv);
             itemView.setOnClickListener(this);
         }
 

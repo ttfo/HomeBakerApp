@@ -4,6 +4,7 @@
     <string name="action_settings">Settings</string>
 
     <string name="recipe_image_content_description">Recipe image</string>
+    <string name="recipe_name_placeholder">Recipe name: unknown</string>
     <string name="SAVOURY_RECIPE_IMAGE_PLACEHOLDER">SAVOURY_RECIPE_IMAGE_PLACEHOLDER</string>
     <string name="SWEET_RECIPE_IMAGE_PLACEHOLDER">SWEET_RECIPE_IMAGE_PLACEHOLDER</string>
 
