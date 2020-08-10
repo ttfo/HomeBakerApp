@@ -1,27 +1,19 @@
 package com.example.android.homebakerapp;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.example.android.homebakerapp.dummy.DummyContent;
 import com.example.android.homebakerapp.model.Recipe;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Parcelable;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import java.io.Serializable;
-import java.util.List;
 
 // Created from Basic Activity template in Android Studio
 // REF. https://developer.android.com/studio/projects/templates#BasicActivity
@@ -45,22 +37,31 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-        //        @TODO FRAGMENT SETUP
-        // Also check https://stackoverflow.com/questions/9931993/passing-an-object-from-an-activity-to-a-fragment
-        // https://stackoverflow.com/questions/42266436/passing-objects-between-fragments/42266700
-        Bundle mRecipeObj = new Bundle();
-        mRecipeObj.putSerializable(RecipeDetailsFirstFragment.RECIPE_OBJ_LABEL, (Serializable) clickedRecipeObj);
-        RecipeDetailsFirstFragment fragment = new RecipeDetailsFirstFragment();
-        fragment.setArguments(mRecipeObj);
-        this.getSupportFragmentManager().beginTransaction() // FRAGMENT SETUP, also check https://www.youtube.com/watch?v=NpzC9UhCMik
-                .replace(R.id.recipe_detail_container, fragment) // load fragment into container view (in content_recipe_details.xml)
-                .commit();
-
         Intent recipeClickedIntent = getIntent();
         if (recipeClickedIntent.hasExtra(getResources().getString(R.string.recipe_object_label))) {
             populateUI();
         }
+
+        // FRAGMENT SETUP
+        // Useful resources:
+        // https://stackoverflow.com/questions/9931993/passing-an-object-from-an-activity-to-a-fragment
+        // https://stackoverflow.com/questions/42266436/passing-objects-between-fragments/42266700
+        // GOOD TUTORIALS:
+        // https://developer.android.com/training/basics/fragments/fragment-ui
+        // https://guides.codepath.com/android/creating-and-using-fragments
+        RecipeDetailsFirstFragment firstFragment = new RecipeDetailsFirstFragment();
+        Bundle mRecipeObjBundle = new Bundle();
+        mRecipeObjBundle.putSerializable(RecipeDetailsFirstFragment.RECIPE_OBJ_LABEL, (Serializable) clickedRecipeObj);
+        firstFragment.setArguments(mRecipeObjBundle);
+
+        Log.i("Fragment parent", "Fragment onCreate");
+
+        this.getSupportFragmentManager().beginTransaction() // FRAGMENT SETUP, also check https://www.youtube.com/watch?v=NpzC9UhCMik
+                .replace(R.id.recipe_detail_container, firstFragment) // load fragment into container view (in content_recipe_details.xml)
+                .commit();
+
+        // TODO Replace with second fragment if edit button is clicked
+
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -78,8 +79,21 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         clickedRecipeObj = (Recipe) getIntent().getSerializableExtra(getResources().getString(R.string.recipe_object_label));
 
         setTitle(clickedRecipeObj.getName() + ": details");
+        Log.i("Fragment parent", "Recipe name: " + clickedRecipeObj.getName());
     }
 
+    // Convenience method
+    // Base code from https://abhiandroid.com/ui/fragment#:~:text=In%20Android%2C%20Fragment%20is%20a,user%20interface%20in%20an%20Activity.
+    // But deprecated getFragmentManager() replaced with getSupportFragmentManager()
+//    private void loadFragment(Context context, Fragment fragment) {
+//        // create a FragmentManager
+//        FragmentManager fm = getSupportFragmentManager(); // Now deprecated, ref. https://developer.android.com/reference/android/app/Activity.html#getFragmentManager%28%29
+//        // create a FragmentTransaction to begin the transaction and replace the Fragment
+//        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+//        // replace the FrameLayout with new Fragment
+//        fragmentTransaction.replace(R.id.frameLayout, fragment);
+//        fragmentTransaction.commit(); // save the change
+//    }
     // TODO button Steps => should open 'steps' activity
 
 }
