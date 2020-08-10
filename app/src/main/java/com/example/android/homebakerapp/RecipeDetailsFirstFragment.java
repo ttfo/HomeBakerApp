@@ -11,6 +11,8 @@ import androidx.navigation.fragment.NavHostFragment;
 
 public class RecipeDetailsFirstFragment extends Fragment {
 
+    public static final String RECIPE_OBJ_LABEL = "my_recipe";
+
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,

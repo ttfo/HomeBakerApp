@@ -97,7 +97,7 @@ public class StepListActivity extends AppCompatActivity {
                     arguments.putString(StepDetailFragment.ARG_ITEM_ID, item.id);
                     StepDetailFragment fragment = new StepDetailFragment();
                     fragment.setArguments(arguments);
-                    mParentActivity.getSupportFragmentManager().beginTransaction()
+                    mParentActivity.getSupportFragmentManager().beginTransaction() // FRAGMENT SETUP, also check https://www.youtube.com/watch?v=NpzC9UhCMik
                             .replace(R.id.step_detail_container, fragment)
                             .commit();
                 } else {
