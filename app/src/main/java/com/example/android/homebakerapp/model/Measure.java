@@ -7,6 +7,7 @@ import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,7 +30,7 @@ import static androidx.room.ForeignKey.CASCADE;
                 // warning: recipe_id column references a foreign key but it is not part of an index.
                 // This may trigger full table scans whenever parent table is modified so you are highly advised to create an index that covers this column.
         })
-public class Measure implements MeasurementSystem {
+public class Measure implements MeasurementSystem, Serializable {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "local_id")

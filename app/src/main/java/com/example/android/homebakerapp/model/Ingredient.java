@@ -8,6 +8,8 @@ import androidx.room.Index;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverter;
 
+import java.io.Serializable;
+
 import static androidx.room.ForeignKey.CASCADE;
 
 @Entity(tableName = "ingredients",
@@ -21,7 +23,7 @@ import static androidx.room.ForeignKey.CASCADE;
             // Check https://stackoverflow.com/questions/58593506/room-compile-problem-column-references-a-foreign-key-but-it-is-not-part-of-an
             @Index(value = {"recipe_id"}), @Index(value = {"ingredient_name"})
         })
-public class Ingredient implements IngredientType  {
+public class Ingredient implements IngredientType, Serializable {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "local_id")

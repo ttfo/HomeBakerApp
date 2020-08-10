@@ -8,6 +8,8 @@
     <string name="SAVOURY_RECIPE_IMAGE_PLACEHOLDER">SAVOURY_RECIPE_IMAGE_PLACEHOLDER</string>
     <string name="SWEET_RECIPE_IMAGE_PLACEHOLDER">SWEET_RECIPE_IMAGE_PLACEHOLDER</string>
 
+    <string name="recipe_object_label">Recipe</string>
+
     <string name="HOMEBAKER_CLOUD_BASE_URL">https://sbs19016-homebaker-webapp.azurewebsites.net</string>
     <string name="HOMEBAKER_RECIPES_ENDPOINT">recipes</string>
     <string name="HOMEBAKER_RECIPE_ENDPOINT">recipe</string>
@@ -18,5 +20,7 @@
     <!--    ERRORS    -->
 
     <string name="error_message_generic">Failed to get results. Please try again!</string>
+    <string name="title_step_list">Steps</string>
+    <string name="title_step_detail">Step Detail</string>
 
 </resources>
