@@ -29,11 +29,16 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_first_fragment">Recipe detail value</string>
     <string name="ingredients_section_title">Ingredients</string>
     <string name="notes_section_title">Notes</string>
+    <string name="generic_details_section_title">General info</string>
+    <string name="authors">Authors</string>
+    <string name="servings">Servings</string>
     <string name="details_to_steps_button">Go to instructions</string>
     <string name="empty_notes">It looks like this recipe may not require any special instruction!</string>
+    <string name="empty_servings">Not set</string>
+    <string name="empty_authors">Unknown author</string>
     <string name="ingredient_default_text">My ingredient (placeholder)</string>
     <string name="measure_default_text">G 500.0</string>
 

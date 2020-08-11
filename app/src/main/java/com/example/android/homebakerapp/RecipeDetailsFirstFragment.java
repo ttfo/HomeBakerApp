@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.android.homebakerapp.model.Author;
 import com.example.android.homebakerapp.model.Ingredient;
 import com.example.android.homebakerapp.model.Measure;
 import com.example.android.homebakerapp.model.Recipe;
@@ -34,10 +35,14 @@ public class RecipeDetailsFirstFragment extends Fragment {
     private TextView mNotes;
     // GridLayout that holds list of ingredients with measurements
     private TableLayout mIngredientTable;
-    // View that holds recipe's notes
+    // View that holds recipe's ingredients
     private TextView mIngredientDefault;
-    // View that holds recipe's notes
+    // View that holds recipe's measurements
     private TextView mMeasurementDefault;
+    // View that holds recipe's servings details
+    private TextView mServings;
+    // View that holds recipe's authors details
+    private TextView mAuthors;
 
     @Override
     public View onCreateView(
@@ -57,6 +62,8 @@ public class RecipeDetailsFirstFragment extends Fragment {
         mIngredientTable = (TableLayout) view.findViewById(R.id.ingredients_table);
         mIngredientDefault = (TextView) view.findViewById(R.id.ingredient_tv0);
         mMeasurementDefault = (TextView) view.findViewById(R.id.measurement_tv0);
+        mServings = (TextView) view.findViewById(R.id.servings_value);
+        mAuthors = (TextView) view.findViewById(R.id.authors_value);
 
         Bundle bundle = this.getArguments();
         //Log.i("FRAGMENT", "Fragment onCreateView"); <= test point
@@ -76,16 +83,36 @@ public class RecipeDetailsFirstFragment extends Fragment {
             mNotes.setText(clickedRecipeObj.getNotes());
         }
 
+        if (clickedRecipeObj.getServings() == 0) {
+            mServings.setText(getResources().getString(R.string.empty_servings));
+        } else {
+            mServings.setText(String.valueOf(clickedRecipeObj.getServings()));
+        }
+
+        List<Author> mAuthorList = clickedRecipeObj.getAuthors();
+        StringBuilder sbAuthors = new StringBuilder("");
+
+        assert mAuthorList != null;
+        for (int i = 0; i < mAuthorList.size(); i++) {
+            Author author = mAuthorList.get(i);
+            if (i == 0) {
+                sbAuthors.append(author.getName());
+            } else {
+                sbAuthors.append(", ").append(author.getName());
+            }
+        }
+
+        if (mAuthorList.isEmpty()) {
+            mAuthors.setText(getResources().getString(R.string.empty_authors));
+        } else {
+            mAuthors.setText(sbAuthors.toString());
+        }
+
         List<Ingredient> mIngredientList = new ArrayList<Ingredient>();
         mIngredientList = clickedRecipeObj.getIngredients();
 
-        //Log.i("INGREDIENTS", "mIngredientTable.getRowCount(): " + String.valueOf(mIngredientTable.getRowCount()));
         Log.i("INGREDIENTS", "mIngredientList.size(): " + String.valueOf(mIngredientList.size()));
         Log.i("INGREDIENTS", "clickedRecipeObj.getIngredients(): " + clickedRecipeObj.getIngredients().toString());
-
-        //mIngredientTable.setRowCount(mIngredientList.size()); // expand grid to contain all ingredients
-
-        //Log.i("INGREDIENTS", "(AFTER) mIngredientTable.getRowCount(): " + String.valueOf(mIngredientTable.getRowCount()));
 
         if (!mIngredientList.isEmpty()) {
 
@@ -102,6 +129,8 @@ public class RecipeDetailsFirstFragment extends Fragment {
                 // adding ingredients programmatically to table
                 // also check https://stackoverflow.com/questions/43344466/how-to-add-table-rows-to-table-layout-programmatically
                 // OR https://stackoverflow.com/questions/18207470/adding-table-rows-dynamically-in-android
+                // About setting columns width, check:
+                // https://stackoverflow.com/questions/32331368/how-do-androidshrinkcolumns-and-androidstretchcolumns-work
                 TableRow row = new TableRow(mContext);
                 TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 1.0f);
                                             // Check https://developer.android.com/reference/android/widget/TableRow.LayoutParams
@@ -113,14 +142,11 @@ public class RecipeDetailsFirstFragment extends Fragment {
                 tvMeasure.setText(ingredientMeasure);
 
                 tvIngredient.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-//                tvIngredient.setPadding(5,5,5,5);
-//                tvIngredient.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
-//                tvIngredient.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-//
+                tvIngredient.setMaxWidth(500);
+                tvIngredient.setPadding(10,0,10,0);
+
                 tvMeasure.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-//                tvMeasure.setPadding(5,5,5,5);
-//                tvMeasure.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
-//                tvMeasure.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+                tvMeasure.setMinimumWidth(100);
 
                 row.addView(tvMeasure);
 
