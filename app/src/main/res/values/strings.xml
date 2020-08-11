@@ -23,24 +23,27 @@
     <string name="title_step_list">Steps</string>
     <string name="title_step_detail">Step Detail</string>
     <string name="title_activity_recipe_details">RecipeDetailsActivity</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
 
+    <!-- Strings used for fragments for navigation (in default template, not used here) -->
+<!--    <string name="first_fragment_label">First Fragment</string>-->
+<!--    <string name="second_fragment_label">Second Fragment</string>-->
+<!--    <string name="next">Next</string>-->
+<!--    <string name="previous">Previous</string>-->
+
+    <!-- Strings used in 'recipe details' activity -->
     <string name="hello_first_fragment">Recipe detail value</string>
+    <string name="measurement_conversion">Convert values to fav measurement system</string>
     <string name="ingredients_section_title">Ingredients</string>
     <string name="notes_section_title">Notes</string>
     <string name="generic_details_section_title">General info</string>
-    <string name="authors">Authors</string>
-    <string name="servings">Servings</string>
+    <string name="authors">Authors:</string>
+    <string name="servings">Servings:</string>
     <string name="details_to_steps_button">Go to instructions</string>
     <string name="empty_notes">It looks like this recipe may not require any special instruction!</string>
     <string name="empty_servings">Not set</string>
     <string name="empty_authors">Unknown author</string>
     <string name="ingredient_default_text">My ingredient (placeholder)</string>
-    <string name="measure_default_text">G 500.0</string>
+    <string name="measure_default_text">G 500.0 (placeholder)</string>
 
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 

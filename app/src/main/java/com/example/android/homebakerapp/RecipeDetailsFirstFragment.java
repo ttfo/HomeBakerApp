@@ -13,6 +13,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -43,6 +44,11 @@ public class RecipeDetailsFirstFragment extends Fragment {
     private TextView mServings;
     // View that holds recipe's authors details
     private TextView mAuthors;
+
+
+    // @TODO
+    // set click listener on switch
+    // hook up switch to settings for fav measurement system
 
     @Override
     public View onCreateView(
@@ -133,8 +139,13 @@ public class RecipeDetailsFirstFragment extends Fragment {
                 // https://stackoverflow.com/questions/32331368/how-do-androidshrinkcolumns-and-androidstretchcolumns-work
                 TableRow row = new TableRow(mContext);
                 TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 1.0f);
-                                            // Check https://developer.android.com/reference/android/widget/TableRow.LayoutParams
+                // Check https://developer.android.com/reference/android/widget/TableRow.LayoutParams
+
                 row.setLayoutParams(lp);
+                // set background color of table row, on odd rows
+                if (i % 2 != 0){
+                    row.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorTableRow));
+                 }
                 TextView tvIngredient = new TextView(mContext);
                 tvIngredient.setText(ingredientName);
                 row.addView(tvIngredient);

@@ -79,6 +79,22 @@
             android:layout_height="5dp"
             android:background="@android:color/darker_gray"/>
 
+        <Switch
+            android:id="@+id/switch1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textSize="18sp"
+            android:background="@color/colorPrimary"
+            android:textColor="@android:color/secondary_text_dark"
+            android:text="@string/measurement_conversion" />
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
+
         <TextView
             android:id="@+id/ingredients_title"
             android:layout_width="match_parent"

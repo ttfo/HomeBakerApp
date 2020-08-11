@@ -16,7 +16,6 @@ import java.util.List;
         })
 public class Recipe implements Serializable {
 
-    // TODO
     // CHECK: https://stackoverflow.com/questions/36879770/how-to-save-foreign-key-entities-using-spring-dao &&
     // https://stackoverflow.com/questions/47511750/how-to-use-foreign-key-in-room-persistence-library
 

@@ -31,11 +31,21 @@ public interface RecipeDao {
     @Delete
     void deleteRecipe(Recipe recipe);
 
+    // REF. https://stackoverflow.com/questions/47538857/android-room-delete-with-parameters
+    @Query("DELETE FROM recipes WHERE local_id = :id")
+    void deleteRecipeById(int id);
+
     // REF. https://www.youtube.com/watch?time_continue=38&v=K3Ul4pQ7tYw&feature=emb_logo
     @Query("SELECT * FROM recipes WHERE local_id = :id") // colon is used to refer to the param provided
     LiveData<Recipe> loadRecipeById(int id);
 
-    @Query("SELECT EXISTS(SELECT * FROM recipes WHERE local_id = :id)")
-    Boolean isRecipeInFavTable(int id);
+    @Query("SELECT * FROM recipes WHERE name = :name") // colon is used to refer to the param provided
+    LiveData<Recipe> loadLiveDataRecipeByName(String name);
+
+    @Query("SELECT * FROM recipes WHERE name = :name") // colon is used to refer to the param provided
+    Recipe loadRecipeByName(String name);
+
+    @Query("SELECT EXISTS(SELECT * FROM recipes WHERE name = :name)") // colon is used to refer to the param provided
+    Boolean isRecipeInFavTable(String name);
 
 }
