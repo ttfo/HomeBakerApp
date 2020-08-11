@@ -157,6 +157,7 @@ public class RecipesScrollingActivity extends AppCompatActivity implements MainR
                 myBookOfRecipes = JsonUtils.parseRecipesJson(recipesBookURLAsString);
                 Log.i("URL", myBookOfRecipes.toString());
                 Log.i("URL", myBookOfRecipes.get(0).getName());
+                Log.i("URL", myBookOfRecipes.get(0).getIngredients().toString());
             } catch (JSONException e) {
                 e.printStackTrace();
             }

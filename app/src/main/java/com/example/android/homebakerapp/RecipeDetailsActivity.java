@@ -49,9 +49,12 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         // GOOD TUTORIALS:
         // https://developer.android.com/training/basics/fragments/fragment-ui
         // https://guides.codepath.com/android/creating-and-using-fragments
-        RecipeDetailsFirstFragment firstFragment = new RecipeDetailsFirstFragment();
-        Bundle mRecipeObjBundle = new Bundle();
+        final RecipeDetailsFirstFragment firstFragment = new RecipeDetailsFirstFragment();
+        final RecipeDetailsSecondFragment secondFragment = new RecipeDetailsSecondFragment();
+
+        final Bundle mRecipeObjBundle = new Bundle();
         mRecipeObjBundle.putSerializable(RecipeDetailsFirstFragment.RECIPE_OBJ_LABEL, (Serializable) clickedRecipeObj);
+
         firstFragment.setArguments(mRecipeObjBundle);
 
         Log.i("Fragment parent", "Fragment onCreate");
@@ -69,6 +72,13 @@ public class RecipeDetailsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+
+                // on click loads second fragment with editable details (notes, ingredients)
+                // only possible if recipe is stored locally (needs to be in 'fav' list)
+                secondFragment.setArguments(mRecipeObjBundle);
+                getSupportFragmentManager().beginTransaction() // FRAGMENT SETUP, also check https://www.youtube.com/watch?v=NpzC9UhCMik
+                        .replace(R.id.recipe_detail_container, secondFragment) // load fragment into container view (in content_recipe_details.xml)
+                        .commit();
             }
         });
     }

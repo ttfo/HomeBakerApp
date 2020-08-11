@@ -76,6 +76,8 @@ public class JsonUtils {
 
                 ingredient.setMeasure(measurementOfIngredient);
 
+                ingredientsInRecipe.add(ingredient);
+
             }
 
             // Parse array of steps within individual recipe

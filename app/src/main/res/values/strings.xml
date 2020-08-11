@@ -30,6 +30,13 @@
     <string name="previous">Previous</string>
 
     <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="ingredients_section_title">Ingredients</string>
+    <string name="notes_section_title">Notes</string>
+    <string name="details_to_steps_button">Go to instructions</string>
+    <string name="empty_notes">It looks like this recipe may not require any special instruction!</string>
+    <string name="ingredient_default_text">My ingredient (placeholder)</string>
+    <string name="measure_default_text">G 500.0</string>
+
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 
 </resources>

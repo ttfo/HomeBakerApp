@@ -18,6 +18,7 @@
         android:id="@+id/recipe_name_tv"
         android:text="@string/recipe_name_placeholder"
         android:layout_width="match_parent"
+        android:textSize="18sp"
         android:layout_height="50dp"
         android:background="@color/colorAccent"
         android:gravity="center" />
