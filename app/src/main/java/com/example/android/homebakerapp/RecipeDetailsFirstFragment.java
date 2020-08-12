@@ -98,20 +98,22 @@ public class RecipeDetailsFirstFragment extends Fragment {
         List<Author> mAuthorList = clickedRecipeObj.getAuthors();
         StringBuilder sbAuthors = new StringBuilder("");
 
-        assert mAuthorList != null;
-        for (int i = 0; i < mAuthorList.size(); i++) {
-            Author author = mAuthorList.get(i);
-            if (i == 0) {
-                sbAuthors.append(author.getName());
-            } else {
-                sbAuthors.append(", ").append(author.getName());
+        if (mAuthorList != null) {
+            for (int i = 0; i < mAuthorList.size(); i++) {
+                Author author = mAuthorList.get(i);
+                if (i == 0) {
+                    sbAuthors.append(author.getName());
+                } else {
+                    sbAuthors.append(", ").append(author.getName());
+                }
             }
-        }
-
-        if (mAuthorList.isEmpty()) {
-            mAuthors.setText(getResources().getString(R.string.empty_authors));
+            if (mAuthorList.isEmpty()) {
+                mAuthors.setText(getResources().getString(R.string.empty_authors));
+            } else {
+                mAuthors.setText(sbAuthors.toString());
+            }
         } else {
-            mAuthors.setText(sbAuthors.toString());
+            mAuthors.setText(getResources().getString(R.string.empty_authors));
         }
 
         List<Ingredient> mIngredientList = new ArrayList<Ingredient>();

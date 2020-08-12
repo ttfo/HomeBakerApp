@@ -3,39 +3,48 @@ package com.example.android.homebakerapp;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.example.android.homebakerapp.db.AppDatabase;
+import com.example.android.homebakerapp.model.Author;
+import com.example.android.homebakerapp.model.Ingredient;
 import com.example.android.homebakerapp.model.Recipe;
 import com.example.android.homebakerapp.utils.JsonUtils;
 import com.example.android.homebakerapp.utils.NetworkUtils;
+import com.example.android.homebakerapp.viewmodel.MainViewModel;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import static java.util.stream.Collectors.toMap;
 
 public class RecipesScrollingActivity extends AppCompatActivity implements MainRecyclerViewAdapter.ItemClickListener, Serializable {
 
@@ -106,6 +115,7 @@ public class RecipesScrollingActivity extends AppCompatActivity implements MainR
         adapterSetUp(mContext, data); // also called from onPostExecute, so that data loads when app is launched
 
         // TODO show more columns if on tablet
+        // NOTE: MIGHT NEED TO SET UP IN ADAPTERSETUP
         // REF. https://stackoverflow.com/questions/29579811/changing-number-of-columns-with-gridlayoutmanager-and-recyclerview/32877124
 
     }
@@ -210,6 +220,7 @@ public class RecipesScrollingActivity extends AppCompatActivity implements MainR
     }
 
 
+//    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -217,10 +228,30 @@ public class RecipesScrollingActivity extends AppCompatActivity implements MainR
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id) {
+            /*
+             * Switching between options on the menu
+             */
+
+            case R.id.action_home:
+                adapterSetUp(mContext, data); // re-loads all recipes from cloud
+                return true;
+
+            case R.id.action_settings:
+                // @TODO show settings page
+                return true;
+
+            case R.id.action_show_fav_list:
+                // Loads list of fav recipes from ROOM DB
+                Toast.makeText(getApplicationContext(), mContext.getResources().getString(R.string.action_show_fav_toast), Toast.LENGTH_SHORT).show();
+                setupFavRecipesVM();
+                return true;
+
+            case R.id.action_search:
+                // @TODO
+                return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -287,6 +318,47 @@ public class RecipesScrollingActivity extends AppCompatActivity implements MainR
 
         Log.i("URL", mBOF.getBookOfRecipesURL().toString());
 
+    }
+
+
+    // loading fav recipes via ViewModel
+    private void setupFavRecipesVM() {
+
+        // TODO
+//        List<Recipe> recipes = new ArrayList<Recipe>();
+
+        MainViewModel viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+
+//        LiveData<List<Author>> authors = viewModel.getFavAuthors();
+//        // REF. https://developer.android.com/reference/android/arch/lifecycle/MediatorLiveData
+//        // AND https://proandroiddev.com/mediatorlivedata-to-the-rescue-5d27645b9bc3 (KOTLIN)
+//        // AND https://medium.com/androiddevelopers/livedata-beyond-the-viewmodel-reactive-patterns-using-transformations-and-mediatorlivedata-fda520ba00b7 (KOTLIN)
+//        // AND https://www.koheiando.com/en/tech-en/android-en/941 (KOTLIN)
+//        MediatorLiveData<List<Author>> authorsMLD = new MediatorLiveData<>();
+//
+//        authorsMLD.addSource(authors, new Observer<List<Author>>() {
+//            @Override
+//            public void onChanged(List<Author> authors) {
+//                // @TODO ?
+//            }
+//        });
+
+        viewModel.getFavRecipes().observe(this, new Observer<List<Recipe>>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onChanged(List<Recipe> recipes) {
+
+//                for (Recipe recipe : recipes) {
+//                Log.d("TAG_VM", "Receiving DB update from LiveData");
+//
+////                    recipe.setAuthors();
+////                    recipe.setIngredients();
+////                    recipe.setSteps();
+//                }
+                RecipesScrollingActivity.this.adapterSetUp(RecipesScrollingActivity.this, new ArrayList<Recipe>(recipes));
+
+            }
+        });
     }
 
 }

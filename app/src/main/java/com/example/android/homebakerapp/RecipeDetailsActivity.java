@@ -1,26 +1,37 @@
 package com.example.android.homebakerapp;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.example.android.homebakerapp.db.AppDatabase;
 import com.example.android.homebakerapp.db.AppExecutors;
+import com.example.android.homebakerapp.model.Author;
+import com.example.android.homebakerapp.model.Ingredient;
+import com.example.android.homebakerapp.model.Measure;
 import com.example.android.homebakerapp.model.Recipe;
+import com.example.android.homebakerapp.model.Step;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.LiveData;
 
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 // Created from Basic Activity template in Android Studio
 // REF. https://developer.android.com/studio/projects/templates#BasicActivity
@@ -95,7 +106,35 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                         // Adds recipe to our local DB of favourite recipes
                         Boolean isRecipeInDB = mDb.recipeDao().isRecipeInFavTable(clickedRecipeObj.getName());
                         if (!isRecipeInDB) {
+                            List<Author> authors = new ArrayList<>();
+                            List<Ingredient> ingredients = new ArrayList<>();
+                            List<Step> steps = new ArrayList<>();
+                            authors = recipeInFavTable.getAuthors();
+                            ingredients = recipeInFavTable.getIngredients();
+                            steps = recipeInFavTable.getSteps();
+
                             mDb.recipeDao().insertRecipe(recipeInFavTable);
+                            // Need to retrieve recipe from DB
+                            // as it now has the auto-populated ID assigned
+                            Recipe recipeAddedToDB = mDb.recipeDao().loadRecipeByName(recipeInFavTable.getName());
+
+                            for (Author author : authors) {
+                                author.setRecipeId(recipeAddedToDB.getLocalId()); // setting up foreign key value
+                                mDb.authorDao().insertAuthor(author);
+                            }
+                            for (Ingredient ingredient : ingredients) {
+                                ingredient.setRecipeId(recipeAddedToDB.getLocalId());
+                                mDb.ingredientDao().insertIngredient(ingredient);
+                                Ingredient ingredientAddedToDB = mDb.ingredientDao().loadIngredient(ingredient.getIngredientName(), recipeAddedToDB.getLocalId());
+                                Measure measure = ingredient.getMeasure();
+                                measure.setIngredientId(ingredientAddedToDB.getLocalId());
+                                mDb.measureDao().insertMeasure(measure);
+                                Log.i("DB_SETUP", "ingredient name: " + ingredient.getIngredientName()); //<= test point
+                            }
+                            for (Step step : steps) {
+                                step.setRecipeId(recipeAddedToDB.getLocalId());
+                                mDb.stepDao().insertStep(step);
+                            }
                         } else {
                             Toast.makeText(RecipeDetailsActivity.this,
                                     "Another recipe with the same name is already in your list", Toast.LENGTH_SHORT).show();

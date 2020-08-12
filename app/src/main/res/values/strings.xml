@@ -1,14 +1,13 @@
 <resources>
     <string name="app_name">Home Baker App</string>
     <string name="large_text">Some text</string>
-    <string name="action_settings">Settings</string>
 
+    <string name="recipe_object_label">Recipe</string>
     <string name="recipe_image_content_description">Recipe image</string>
     <string name="recipe_name_placeholder">Recipe name: unknown</string>
     <string name="SAVOURY_RECIPE_IMAGE_PLACEHOLDER">SAVOURY_RECIPE_IMAGE_PLACEHOLDER</string>
     <string name="SWEET_RECIPE_IMAGE_PLACEHOLDER">SWEET_RECIPE_IMAGE_PLACEHOLDER</string>
-
-    <string name="recipe_object_label">Recipe</string>
+    <string name="action_show_fav_toast">Showing recipes in your favourite list</string>
 
     <string name="HOMEBAKER_CLOUD_BASE_URL">https://sbs19016-homebaker-webapp.azurewebsites.net</string>
     <string name="HOMEBAKER_RECIPES_ENDPOINT">recipes</string>
@@ -16,6 +15,12 @@
     <string name="HOMEBAKER_RECIPE_ENDPOINT_Q_PARAM">id</string>
     <string name="HOMEBAKER_INGREDIENTS_ENDPOINT">ingredients</string>
     <string name="HOMEBAKER_INGREDIENTS_ENDPOINT_Q_PARAM">recipe-id</string>
+
+    <!-- Menu entries -->
+    <string name="action_settings">Settings</string>
+    <string name="action_show_fav_list">Show favourites</string>
+    <string name="action_search">Search</string>
+    <string name="action_home">Home</string>
 
     <!--    ERRORS    -->
 
@@ -45,6 +50,7 @@
     <string name="ingredient_default_text">My ingredient (placeholder)</string>
     <string name="measure_default_text">G 500.0 (placeholder)</string>
 
+    <!-- Strings used in 'recipe details' activity, for the 'recipe edit' fragment -->
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 
 </resources>
