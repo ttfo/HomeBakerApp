@@ -245,6 +245,7 @@ public class RecipesScrollingActivity extends AppCompatActivity implements MainR
             case R.id.action_show_fav_list:
                 // Loads list of fav recipes from ROOM DB
                 Toast.makeText(getApplicationContext(), mContext.getResources().getString(R.string.action_show_fav_toast), Toast.LENGTH_SHORT).show();
+                item.setIcon(getDrawable(R.drawable.fav_selected));
                 setupFavRecipesVM();
                 return true;
 
@@ -325,61 +326,35 @@ public class RecipesScrollingActivity extends AppCompatActivity implements MainR
     // loading fav recipes via ViewModel
     private void setupFavRecipesVM() {
 
-        // TODO
-        // CHECK!! https://www.youtube.com/watch?v=2rO4r-JOQtA (around min 11)
-//        List<Recipe> recipes = new ArrayList<Recipe>();
-
         final MainViewModel viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         //viewModel.recipesLD;
         viewModel.getFavRecipes().observe(this, new Observer<List<Recipe>>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onChanged(List<Recipe> recipes) {
-                RecipesScrollingActivity.this.adapterSetUp(RecipesScrollingActivity.this, new ArrayList<Recipe>(recipes));
+
+                // This list will help to merge Recipe data with its contained POJO's
+                List<Recipe> recipesMerged = new ArrayList<>();
+
+                for (int i = 0; i < recipes.size(); i++) {
+                    recipesMerged.add(recipes.get(i));
+                    Log.i("setupFavRecipesVM_1", recipesMerged.get(i).getName());
+                    String recipeName = recipesMerged.get(i).getName();
+                    for (Recipe recipeInData : data) {
+                        Log.i("setupFavRecipesVM_2", recipeInData.getName());
+                        if (recipeName.equals(recipeInData.getName())) {
+                            Log.i("setupFavRecipesVM_3", "MATCH");
+                            recipesMerged.get(i).setIngredients(recipeInData.getIngredients());
+                            recipesMerged.get(i).setAuthors(recipeInData.getAuthors());
+                            recipesMerged.get(i).setSteps(recipeInData.getSteps());
+                            break;
+                        }
+                    }
+                }
+
+                RecipesScrollingActivity.this.adapterSetUp(RecipesScrollingActivity.this, new ArrayList<Recipe>(recipesMerged));
             }
         });
-
-//        LiveData<List<Author>> authors = viewModel.getFavAuthors();
-//        // REF. https://developer.android.com/reference/android/arch/lifecycle/MediatorLiveData
-//        // AND https://proandroiddev.com/mediatorlivedata-to-the-rescue-5d27645b9bc3 (KOTLIN)
-//        // AND https://medium.com/androiddevelopers/livedata-beyond-the-viewmodel-reactive-patterns-using-transformations-and-mediatorlivedata-fda520ba00b7 (KOTLIN)
-//        // AND https://www.koheiando.com/en/tech-en/android-en/941 (KOTLIN)
-//        MediatorLiveData<List<Author>> authorsMLD = new MediatorLiveData<>();
-//
-//        authorsMLD.addSource(authors, new Observer<List<Author>>() {
-//            @Override
-//            public void onChanged(List<Author> authors) {
-//                // @TODO ?
-//            }
-//        });
-
-//        viewModel.getFavRecipes().observe(this, new Observer<List<Recipe>>() {
-//            @RequiresApi(api = Build.VERSION_CODES.N)
-//            @Override
-//            public void onChanged(List<Recipe> recipes) {
-//
-////                LiveData<List<Author>> mAuthors = viewModel.getFavAuthors();
-////                List<Ingredient> mIngredients;
-////                List<Step> mSteps;
-////
-////                for (Recipe recipe : recipes) {
-////
-////                    recipe.setName(recipe.getName() + "-test");
-////
-////                    if (recipe.getIngredients() == null) {
-////                        Log.i("LIVEDATA", "Recipe ingredients are null");
-////                    }
-//
-////                Log.d("TAG_VM", "Receiving DB update from LiveData");
-////
-//////                    recipe.setAuthors();
-//////                    recipe.setIngredients();
-//////                    recipe.setSteps();
-////                }
-//                RecipesScrollingActivity.this.adapterSetUp(RecipesScrollingActivity.this, new ArrayList<Recipe>(recipes));
-//
-//            }
-//        });
     }
 
 }

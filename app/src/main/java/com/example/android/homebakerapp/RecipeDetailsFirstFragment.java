@@ -99,6 +99,7 @@ public class RecipeDetailsFirstFragment extends Fragment {
         StringBuilder sbAuthors = new StringBuilder("");
 
         if (mAuthorList != null) {
+            Log.i("AUTHORS", "AUTHORS NOT NULL");
             for (int i = 0; i < mAuthorList.size(); i++) {
                 Author author = mAuthorList.get(i);
                 if (i == 0) {
@@ -113,17 +114,17 @@ public class RecipeDetailsFirstFragment extends Fragment {
                 mAuthors.setText(sbAuthors.toString());
             }
         } else {
+            Log.i("AUTHORS", "AUTHORS NULL");
             mAuthors.setText(getResources().getString(R.string.empty_authors));
         }
 
         List<Ingredient> mIngredientList = new ArrayList<Ingredient>();
         mIngredientList = clickedRecipeObj.getIngredients();
 
-        Log.i("INGREDIENTS", "mIngredientList.size(): " + String.valueOf(mIngredientList.size()));
-        Log.i("INGREDIENTS", "clickedRecipeObj.getIngredients(): " + clickedRecipeObj.getIngredients().toString());
-
         if (!mIngredientList.isEmpty()) {
 
+            Log.i("INGREDIENTS", "mIngredientList.size(): " + String.valueOf(mIngredientList.size()));
+            Log.i("INGREDIENTS", "clickedRecipeObj.getIngredients(): " + clickedRecipeObj.getIngredients().toString());
             mIngredientDefault.setVisibility(View.GONE);
             mMeasurementDefault.setVisibility(View.GONE);
 
