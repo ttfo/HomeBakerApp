@@ -10,6 +10,7 @@ import com.example.android.homebakerapp.db.AppDatabase;
 import com.example.android.homebakerapp.model.Author;
 import com.example.android.homebakerapp.model.Ingredient;
 import com.example.android.homebakerapp.model.Recipe;
+import com.example.android.homebakerapp.model.Step;
 import com.example.android.homebakerapp.utils.JsonUtils;
 import com.example.android.homebakerapp.utils.NetworkUtils;
 import com.example.android.homebakerapp.viewmodel.MainViewModel;
@@ -325,9 +326,18 @@ public class RecipesScrollingActivity extends AppCompatActivity implements MainR
     private void setupFavRecipesVM() {
 
         // TODO
+        // CHECK!! https://www.youtube.com/watch?v=2rO4r-JOQtA (around min 11)
 //        List<Recipe> recipes = new ArrayList<Recipe>();
 
-        MainViewModel viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        final MainViewModel viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        //viewModel.recipesLD;
+        viewModel.getFavRecipes().observe(this, new Observer<List<Recipe>>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onChanged(List<Recipe> recipes) {
+                RecipesScrollingActivity.this.adapterSetUp(RecipesScrollingActivity.this, new ArrayList<Recipe>(recipes));
+            }
+        });
 
 //        LiveData<List<Author>> authors = viewModel.getFavAuthors();
 //        // REF. https://developer.android.com/reference/android/arch/lifecycle/MediatorLiveData
@@ -343,22 +353,33 @@ public class RecipesScrollingActivity extends AppCompatActivity implements MainR
 //            }
 //        });
 
-        viewModel.getFavRecipes().observe(this, new Observer<List<Recipe>>() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onChanged(List<Recipe> recipes) {
-
-//                for (Recipe recipe : recipes) {
-//                Log.d("TAG_VM", "Receiving DB update from LiveData");
+//        viewModel.getFavRecipes().observe(this, new Observer<List<Recipe>>() {
+//            @RequiresApi(api = Build.VERSION_CODES.N)
+//            @Override
+//            public void onChanged(List<Recipe> recipes) {
 //
-////                    recipe.setAuthors();
-////                    recipe.setIngredients();
-////                    recipe.setSteps();
-//                }
-                RecipesScrollingActivity.this.adapterSetUp(RecipesScrollingActivity.this, new ArrayList<Recipe>(recipes));
-
-            }
-        });
+////                LiveData<List<Author>> mAuthors = viewModel.getFavAuthors();
+////                List<Ingredient> mIngredients;
+////                List<Step> mSteps;
+////
+////                for (Recipe recipe : recipes) {
+////
+////                    recipe.setName(recipe.getName() + "-test");
+////
+////                    if (recipe.getIngredients() == null) {
+////                        Log.i("LIVEDATA", "Recipe ingredients are null");
+////                    }
+//
+////                Log.d("TAG_VM", "Receiving DB update from LiveData");
+////
+//////                    recipe.setAuthors();
+//////                    recipe.setIngredients();
+//////                    recipe.setSteps();
+////                }
+//                RecipesScrollingActivity.this.adapterSetUp(RecipesScrollingActivity.this, new ArrayList<Recipe>(recipes));
+//
+//            }
+//        });
     }
 
 }
