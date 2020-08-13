@@ -30,7 +30,18 @@
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
 
+            <SearchView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="bottom"
+                android:background="#000000"
+                android:gravity="bottom" />
+
         </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+        <SearchView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <include layout="@layout/content_scrolling" />
