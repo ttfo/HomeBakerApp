@@ -1,6 +1,7 @@
 package com.example.android.homebakerapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,7 +9,8 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridLayout;
+import android.widget.Button;
+import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -17,13 +19,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.preference.PreferenceManager;
 
 import com.example.android.homebakerapp.model.Author;
 import com.example.android.homebakerapp.model.Ingredient;
 import com.example.android.homebakerapp.model.Measure;
 import com.example.android.homebakerapp.model.Recipe;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -54,6 +56,12 @@ public class RecipeDetailsFirstFragment extends Fragment implements SharedPrefer
     private Boolean isConvOn;
     // String to retrieve desired measurement system
     private String mMeasurementSystemPref;
+    // Button that points to 'Steps' activity
+    private Button goTosteps;
+    // My recipe object
+    private Recipe clickedRecipeObj;
+    // ScrollView that contains all other elements in fragment
+    private ScrollView sV;
 
     // @TODO
     // set click listener on switch
@@ -64,7 +72,7 @@ public class RecipeDetailsFirstFragment extends Fragment implements SharedPrefer
             @NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
-        Recipe clickedRecipeObj = new Recipe();
+        clickedRecipeObj = new Recipe();
         mContext = getContext();
 
         // Check https://stackoverflow.com/questions/17076663/problems-with-settext-in-a-fragment-in-oncreateview
@@ -80,6 +88,8 @@ public class RecipeDetailsFirstFragment extends Fragment implements SharedPrefer
         mServings = (TextView) view.findViewById(R.id.servings_value);
         mAuthors = (TextView) view.findViewById(R.id.authors_value);
         mSwitch = (Switch) view.findViewById(R.id.measurement_pref_switch);
+        goTosteps = (Button) view.findViewById(R.id.go_to_steps_button);
+        sV = (ScrollView) view.findViewById(R.id.recipe_details_scroll);
 
         Bundle bundle = this.getArguments();
         //Log.i("FRAGMENT", "Fragment onCreateView"); <= test point
@@ -223,6 +233,18 @@ public class RecipeDetailsFirstFragment extends Fragment implements SharedPrefer
             }
         }
 
+        // When 'go to instructions' button is clicked, move to steps details
+        goTosteps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent startStepsActivity = new Intent(getActivity(),StepListActivity.class);
+                startStepsActivity.putExtra(getResources().getString(R.string.recipe_object_label), clickedRecipeObj);
+                startActivity(startStepsActivity);
+
+            }
+        });
+
         // Code below is just for testing purposes (would replace button text with the recipe name)
 //        mButton = (Button) view.findViewById(R.id.button_first);
 //        mButton.setText(clickedRecipeObj.getName());
@@ -255,6 +277,12 @@ public class RecipeDetailsFirstFragment extends Fragment implements SharedPrefer
                 mSwitch.setChecked(true);
             }
         }
+    }
+
+    // method that activates button on parent activity to scroll to bottom of fragment
+    public void scrollToBottom() {
+        Log.i("FRAGMENT", "scrollToBottom called");
+        sV.fullScroll(ScrollView.FOCUS_DOWN);
     }
 
 }

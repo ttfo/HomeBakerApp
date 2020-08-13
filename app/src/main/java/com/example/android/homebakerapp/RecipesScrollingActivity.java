@@ -135,7 +135,7 @@ public class RecipesScrollingActivity extends AppCompatActivity implements MainR
                 if (newText.length() > 2 && newText.length() < 20) {
                     Log.i("SEARCH", "onQueryTextChange");
                     callSearch(newText);
-                } 
+                }
                 return true;
             }
 

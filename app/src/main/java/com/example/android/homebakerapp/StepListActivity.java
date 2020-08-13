@@ -13,6 +13,7 @@ import com.example.android.homebakerapp.model.Recipe;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,17 +45,19 @@ public class StepListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_step_list);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitle(getTitle());
-
-        // @TODO fix to get intent from RecipeDetailsActivity
+        // Get intent from RecipeDetailsActivity
         Intent recipeClickedIntent = getIntent();
         if (recipeClickedIntent.hasExtra(getResources().getString(R.string.recipe_object_label))) {
-            populateUI();
+            clickedRecipeObj = (Recipe) getIntent().getSerializableExtra(getResources().getString(R.string.recipe_object_label));
+            Log.i("INTENT", clickedRecipeObj.getName());
+            //populateUI(); // populates with recipe obj. data
         }
+
+        setContentView(R.layout.activity_step_list);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        setTitle(clickedRecipeObj.getName() + ": " + toolbar.getTitle());
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

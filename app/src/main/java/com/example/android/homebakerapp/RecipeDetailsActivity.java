@@ -18,13 +18,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import java.io.Serializable;
@@ -196,10 +199,10 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         Log.i("Fragment parent", "Fragment onCreate");
 
         this.getSupportFragmentManager().beginTransaction() // FRAGMENT SETUP, also check https://www.youtube.com/watch?v=NpzC9UhCMik
-                .replace(R.id.recipe_detail_container, firstFragment) // load fragment into container view (in content_recipe_details.xml)
+                .replace(R.id.recipe_detail_container, firstFragment, "firstRecipeDetailsFragment") // load fragment into container view (in content_recipe_details.xml)
                 .commit();
 
-        // TODO Replace with second fragment if edit button is clicked
+        // @TODO Replace with second fragment if edit button is clicked
 
 
         FloatingActionButton fabP = findViewById(R.id.fab_pencil);
@@ -222,6 +225,27 @@ public class RecipeDetailsActivity extends AppCompatActivity {
 
             }
         });
+
+        // @TODO only show button if recipe has steps
+        FloatingActionButton fabN = findViewById(R.id.fab_next);
+        //final ScrollView sV = (ScrollView) findViewById(R.id.recipe_details_scroll);
+
+        fabN.setOnClickListener(new View.OnClickListener() {
+            // REF. https://stackoverflow.com/questions/3307267/how-to-scroll-to-bottom-in-a-scrollview-on-activity-startup
+            // && https://stackoverflow.com/questions/43967378/change-fragments-textviewss-text-from-activity
+            // && https://stackoverflow.com/questions/10903077/calling-a-fragment-method-from-a-parent-activity
+            @Override
+            public void onClick(View view) {
+                RecipeDetailsFirstFragment firstFragment = (RecipeDetailsFirstFragment) getSupportFragmentManager().findFragmentByTag("firstRecipeDetailsFragment");
+                firstFragment.scrollToBottom();
+
+//                Intent startStepsActivity = new Intent(RecipeDetailsActivity.this,StepListActivity.class);
+//                startStepsActivity.putExtra(getResources().getString(R.string.recipe_object_label), clickedRecipeObj);
+//                startActivity(startStepsActivity);
+
+            }
+        });
+
     }
 
 
@@ -278,6 +302,5 @@ public class RecipeDetailsActivity extends AppCompatActivity {
 //        fragmentTransaction.replace(R.id.frameLayout, fragment);
 //        fragmentTransaction.commit(); // save the change
 //    }
-    // TODO button Steps => should open 'steps' activity
 
 }
