@@ -8,8 +8,9 @@
     <string name="SAVOURY_RECIPE_IMAGE_PLACEHOLDER">SAVOURY_RECIPE_IMAGE_PLACEHOLDER</string>
     <string name="SWEET_RECIPE_IMAGE_PLACEHOLDER">SWEET_RECIPE_IMAGE_PLACEHOLDER</string>
     <string name="action_show_fav_toast">Showing recipes in your favourite list</string>
+    <string name="action_hide_fav_toast">Showing all recipes</string>
 
-    <string name="HOMEBAKER_CLOUD_BASE_URL">https://sbs19016-homebaker-webapp.azurewebsites.net</string>
+    <string name="HOMEBAKER_CLOUD_BASE_URL">https://sbs19016-bakerapp-testing-restfull-app.azurewebsites.net/</string>
     <string name="HOMEBAKER_RECIPES_ENDPOINT">recipes</string>
     <string name="HOMEBAKER_RECIPE_ENDPOINT">recipe</string>
     <string name="HOMEBAKER_RECIPE_ENDPOINT_Q_PARAM">id</string>
@@ -25,15 +26,28 @@
     <!--    ERRORS    -->
 
     <string name="error_message_generic">Failed to get results. Please try again!</string>
+
+    <!--    Settings options    -->
+
+    <string name="pref_measurement_option_metric">Convert to metric system</string>
+    <string name="pref_measurement_option_uscs">Convert to USCS system</string>
+    <string name="pref_metric">metric</string>
+    <string name="pref_uscs">uscs</string>
+    <string name="pref_convert_bool_key">convert_values_bool</string>
+    <string name="pref_choose_system_key">choose_measurement_system</string>
+
+    <!--    Activity labels    -->
+
     <string name="title_step_list">Steps</string>
     <string name="title_step_detail">Step Detail</string>
     <string name="title_activity_recipe_details">RecipeDetailsActivity</string>
+    <string name="title_settings">Settings</string>
 
     <!-- Strings used for fragments for navigation (in default template, not used here) -->
-<!--    <string name="first_fragment_label">First Fragment</string>-->
-<!--    <string name="second_fragment_label">Second Fragment</string>-->
-<!--    <string name="next">Next</string>-->
-<!--    <string name="previous">Previous</string>-->
+    <!--    <string name="first_fragment_label">First Fragment</string>-->
+    <!--    <string name="second_fragment_label">Second Fragment</string>-->
+    <!--    <string name="next">Next</string>-->
+    <!--    <string name="previous">Previous</string>-->
 
     <!-- Strings used in 'recipe details' activity -->
     <string name="hello_first_fragment">Recipe detail value</string>

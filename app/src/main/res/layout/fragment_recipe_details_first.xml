@@ -80,7 +80,7 @@
             android:background="@android:color/darker_gray"/>
 
         <Switch
-            android:id="@+id/switch1"
+            android:id="@+id/measurement_pref_switch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="5dp"

@@ -139,7 +139,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                             Toast.makeText(RecipeDetailsActivity.this,
                                     "Another recipe with the same name is already in your list", Toast.LENGTH_SHORT).show();
                         }
-                        finish();
+                        //finish(); // enable to send back to RecipesScrollingActivity
                     }
                 });
 
@@ -170,7 +170,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                             mDb.recipeDao().deleteRecipe(mRecipeInDB);
                             //Log.i("DB", "Removing recipe from DB (AFTER)");
                         }
-                        finish();
+                        //finish(); // enable to send back to RecipesScrollingActivity
                     }
                 });
 

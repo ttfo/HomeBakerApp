@@ -1,6 +1,7 @@
 package com.example.android.homebakerapp;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
+import android.widget.Switch;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -16,17 +18,19 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.preference.PreferenceManager;
 
 import com.example.android.homebakerapp.model.Author;
 import com.example.android.homebakerapp.model.Ingredient;
 import com.example.android.homebakerapp.model.Measure;
 import com.example.android.homebakerapp.model.Recipe;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class RecipeDetailsFirstFragment extends Fragment {
+public class RecipeDetailsFirstFragment extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     public static final String RECIPE_OBJ_LABEL = "my_recipe";
 
@@ -44,7 +48,12 @@ public class RecipeDetailsFirstFragment extends Fragment {
     private TextView mServings;
     // View that holds recipe's authors details
     private TextView mAuthors;
-
+    // View that holds the switch for measurements conversion
+    private Switch mSwitch;
+    // Boolean to check if the customer has chosen to convert values
+    private Boolean isConvOn;
+    // String to retrieve desired measurement system
+    private String mMeasurementSystemPref;
 
     // @TODO
     // set click listener on switch
@@ -59,7 +68,7 @@ public class RecipeDetailsFirstFragment extends Fragment {
         mContext = getContext();
 
         // Check https://stackoverflow.com/questions/17076663/problems-with-settext-in-a-fragment-in-oncreateview
-        LayoutInflater lf = Objects.requireNonNull(getActivity()).getLayoutInflater();
+        LayoutInflater lf = requireActivity().getLayoutInflater();
         View view = lf.inflate(R.layout.fragment_recipe_details_first, container, false);
 
         // Layout has been inflated, can set up views
@@ -70,6 +79,7 @@ public class RecipeDetailsFirstFragment extends Fragment {
         mMeasurementDefault = (TextView) view.findViewById(R.id.measurement_tv0);
         mServings = (TextView) view.findViewById(R.id.servings_value);
         mAuthors = (TextView) view.findViewById(R.id.authors_value);
+        mSwitch = (Switch) view.findViewById(R.id.measurement_pref_switch);
 
         Bundle bundle = this.getArguments();
         //Log.i("FRAGMENT", "Fragment onCreateView"); <= test point
@@ -79,6 +89,24 @@ public class RecipeDetailsFirstFragment extends Fragment {
             //Log.i("FRAGMENT", "Recipe name: " + clickedRecipeObj.getName()); <= test point
         }
 
+        // Retrieving user preference for measurement conversion
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+//        SharedPreferences convertValuesBoolSettings = mContext.getSharedPreferences(getResources().getString(R.string.pref_convert_bool_key), mContext.MODE_PRIVATE);
+//        SharedPreferences convertSystemSettings = mContext.getSharedPreferences(getResources().getString(R.string.pref_choose_system_key), mContext.MODE_PRIVATE);
+        // Boolean to check if the customer has chosen to convert values
+        isConvOn = sharedPreferences.getBoolean(getString(R.string.pref_convert_bool_key),
+                getResources().getBoolean(R.bool.pref_conv_on_or_off));
+        Log.i("PREF", isConvOn.toString());
+        // String to retrieve desired measurement system
+        mMeasurementSystemPref = sharedPreferences.getString(getString(R.string.pref_choose_system_key),"");
+        Log.i("PREF", mMeasurementSystemPref);
+
+        //isConvOn = true;
+        if (isConvOn) {
+            mSwitch.setChecked(true);
+        } else {
+            mSwitch.setChecked(false);
+        }
 
         // RETRIEVE RECIPE DETAILS FROM RECIPE OBJ
 
@@ -131,9 +159,36 @@ public class RecipeDetailsFirstFragment extends Fragment {
             for (int i = 0; i < mIngredientList.size(); i++) {
 
                 Ingredient mIngredientObj = mIngredientList.get(i);
+
                 Measure mMeasureObj = mIngredientObj.getMeasure();
+                String ingredientMeasure = "";
+                DecimalFormat df = new DecimalFormat("#.##"); // Check: https://stackoverflow.com/questions/2538787/how-to-print-a-float-with-2-decimal-places-in-java
+
+                // Check if user has chosen to convert values
+                if (isConvOn) {
+                    Measure convMeasure = new Measure();
+                    Log.i("CONV", "CONV IS ON");
+                    if (mMeasurementSystemPref.equals("metric")) {
+                        if (mMeasureObj.getMeasurementLocalSystem().name().equals("uscs")) { // User chose to have metric values, but recipe contains USCS
+                            Log.i("CONV", "METRIC PREF/ USCS VALUE");
+                            convMeasure = convMeasure.switchSystem(mMeasureObj);
+                            ingredientMeasure = convMeasure.getMeasurementUnit() + " " + df.format(convMeasure.getMeasurementValue());
+                        } else {
+                            ingredientMeasure = mMeasureObj.getMeasurementUnit() + " " + mMeasureObj.getMeasurementValue();
+                        }
+                    } else if (mMeasurementSystemPref.equals("uscs")) {
+                        if (mMeasureObj.getMeasurementLocalSystem().name().equals("metric")) { // User chose to have USCS values, but recipe contains metric
+                            convMeasure = convMeasure.switchSystem(mMeasureObj);
+                            ingredientMeasure = convMeasure.getMeasurementUnit() + " " + df.format(convMeasure.getMeasurementValue());
+                        } else {
+                            ingredientMeasure = mMeasureObj.getMeasurementUnit() + " " + mMeasureObj.getMeasurementValue();
+                        }
+                    }
+                } else {
+                    ingredientMeasure = mMeasureObj.getMeasurementUnit() + " " + mMeasureObj.getMeasurementValue();
+                }
+
                 String ingredientName = mIngredientObj.getIngredientName();
-                String ingredientMeasure = mMeasureObj.getMeasurementUnit() + " " + mMeasureObj.getMeasurementValue();
 
                 // adding ingredients programmatically to table
                 // also check https://stackoverflow.com/questions/43344466/how-to-add-table-rows-to-table-layout-programmatically
@@ -176,13 +231,6 @@ public class RecipeDetailsFirstFragment extends Fragment {
         return view;
     }
 
-    private void addRowToGridLayout(ViewGroup viewGroup) {
-        mContext = getContext();
-        TextView ingredientTv = new TextView(mContext);
-        // TODO
-        viewGroup.addView(ingredientTv);
-    }
-
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -196,4 +244,17 @@ public class RecipeDetailsFirstFragment extends Fragment {
 //            }
 //        });
     }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+
+        if(key.equals(getString(R.string.pref_convert_bool_key))) {
+            if (mSwitch.isChecked() == true) {
+                mSwitch.setChecked(false);
+            } else {
+                mSwitch.setChecked(true);
+            }
+        }
+    }
+
 }

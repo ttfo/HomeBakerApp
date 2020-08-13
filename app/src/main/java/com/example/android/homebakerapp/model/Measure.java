@@ -150,7 +150,49 @@ public class Measure implements MeasurementSystem, Serializable {
 
     }
 
-    // TODO create methods to convert from US to metric
+
+    // Convenience method to convert from one system to the other one
+    public Measure switchSystem(Measure measure) {
+        Measure convMeasure = new Measure();
+        if (measure.getMeasurementLocalSystem().name().equals("metric")) { // convert to USCS system
+            if (measure.getMeasurementType().name().equals("volume")) {
+                convMeasure.setMeasurementType(MeasurementSystem.measurementType.volume);
+                convMeasure.setMeasurementLocalSystem(MeasurementSystem.measurementLocalSystem.uscs);
+                convMeasure.setMeasurementValueRefUnit(measure.getMeasurementValueRefUnit()/fluidOunceToML);
+                convMeasure.setMeasurementRefUnit("flOZ");
+            }
+            if (measure.getMeasurementType().name().equals("weight")) {
+                convMeasure.setMeasurementType(MeasurementSystem.measurementType.weight);
+                convMeasure.setMeasurementLocalSystem(MeasurementSystem.measurementLocalSystem.uscs);
+                convMeasure.setMeasurementValueRefUnit(measure.getMeasurementValueRefUnit()/ounceToGram);
+                convMeasure.setMeasurementRefUnit("OZ");
+            }
+            convMeasure.setMeasurementUnit(convMeasure.getMeasurementRefUnit());
+            convMeasure.setMeasurementValue(convMeasure.getMeasurementValueRefUnit());
+
+        } else if (measure.getMeasurementLocalSystem().name().equals("uscs")) { // convert to metric system
+            if (measure.getMeasurementType().name().equals("volume")) {
+                convMeasure.setMeasurementType(MeasurementSystem.measurementType.volume);
+                convMeasure.setMeasurementLocalSystem(MeasurementSystem.measurementLocalSystem.metric);
+                convMeasure.setMeasurementValueRefUnit(measure.getMeasurementValueRefUnit()*fluidOunceToML);
+                convMeasure.setMeasurementRefUnit("ml");
+            }
+            if (measure.getMeasurementType().name().equals("weight")) {
+                convMeasure.setMeasurementType(MeasurementSystem.measurementType.weight);
+                convMeasure.setMeasurementLocalSystem(MeasurementSystem.measurementLocalSystem.metric);
+                convMeasure.setMeasurementValueRefUnit(measure.getMeasurementValueRefUnit()*ounceToGram);
+                convMeasure.setMeasurementRefUnit("G");
+            }
+            convMeasure.setMeasurementUnit(convMeasure.getMeasurementRefUnit());
+            convMeasure.setMeasurementValue(convMeasure.getMeasurementValueRefUnit());
+
+        } else {
+            // don't convert generic measurements like UNIT
+            return measure;
+        }
+        return convMeasure;
+    }
+
 
     // Helper method to build HashMap of measurement type and multiplier to reference unit
     private static HashMap<String, Double> buildMeasHashMap(List<String> ls, List<Double> ld) {

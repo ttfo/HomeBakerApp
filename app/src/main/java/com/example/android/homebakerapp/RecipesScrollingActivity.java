@@ -68,6 +68,8 @@ public class RecipesScrollingActivity extends AppCompatActivity implements MainR
     // Member variable for the Database
     private AppDatabase mDb;
 
+    // Flag needed to switch between 'fav' icons on menu
+    private Boolean flagFavRecipesLoaded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +97,7 @@ public class RecipesScrollingActivity extends AppCompatActivity implements MainR
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "@TODO Launch create new recipe activity", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
                 // TODO open favourite list on button click
 
@@ -233,20 +235,26 @@ public class RecipesScrollingActivity extends AppCompatActivity implements MainR
             /*
              * Switching between options on the menu
              */
-
-            case R.id.action_home:
-                adapterSetUp(mContext, data); // re-loads all recipes from cloud
-                return true;
-
             case R.id.action_settings:
-                // @TODO show settings page
+                Intent startSettingsActivity = new Intent(this,SettingsActivity.class);
+                startActivity(startSettingsActivity);
                 return true;
 
             case R.id.action_show_fav_list:
                 // Loads list of fav recipes from ROOM DB
-                Toast.makeText(getApplicationContext(), mContext.getResources().getString(R.string.action_show_fav_toast), Toast.LENGTH_SHORT).show();
-                item.setIcon(getDrawable(R.drawable.fav_selected));
-                setupFavRecipesVM();
+
+                if (flagFavRecipesLoaded) {
+                    item.setIcon(getDrawable(R.drawable.fav_list));
+                    adapterSetUp(mContext, data); // re-loads all recipes from cloud
+                    Toast.makeText(getApplicationContext(), mContext.getResources().getString(R.string.action_hide_fav_toast), Toast.LENGTH_SHORT).show();
+                    flagFavRecipesLoaded = false;
+                } else {
+                    item.setIcon(getDrawable(R.drawable.fav_selected));
+                    setupFavRecipesVM(); // loads recipes set as favourites
+                    Toast.makeText(getApplicationContext(), mContext.getResources().getString(R.string.action_show_fav_toast), Toast.LENGTH_SHORT).show();
+                    flagFavRecipesLoaded = true;
+                }
+
                 return true;
 
             case R.id.action_search:

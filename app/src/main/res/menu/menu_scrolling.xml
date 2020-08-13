@@ -8,12 +8,6 @@
         android:title="@string/action_settings"
         app:showAsAction="never" />
     <item
-        android:id="@+id/action_home"
-        android:orderInCategory="10"
-        android:title="@string/action_home"
-        app:showAsAction="ifRoom"
-        android:icon="@drawable/home" />
-    <item
         android:id="@+id/action_show_fav_list"
         android:orderInCategory="20"
         android:title="@string/action_show_fav_list"

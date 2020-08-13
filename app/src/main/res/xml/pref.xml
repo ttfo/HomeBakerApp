@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference
+        android:defaultValue="@bool/pref_conv_on_or_off"
+        android:key="@string/pref_convert_bool_key"
+        android:summaryOff="Do not convert values"
+        android:summaryOn="Convert values"
+        android:title="Convert ingredient measurements"
+        />
+    <ListPreference
+        android:dependency="convert_values_bool"
+        android:defaultValue=""
+        android:key="@string/pref_choose_system_key"
+        android:entries="@array/measurement_preference"
+        android:entryValues="@array/measurement_preference_values"
+        android:title="Choose preferred measurement system"
+        />
+</PreferenceScreen>
