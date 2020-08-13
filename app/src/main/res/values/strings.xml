@@ -68,4 +68,7 @@
     <!-- Strings used in 'recipe details' activity, for the 'recipe edit' fragment -->
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 
+    <!--    Steps activity and fragments    -->
+    <string name="ARG_ITEM_ID">item_id</string>
+
 </resources>

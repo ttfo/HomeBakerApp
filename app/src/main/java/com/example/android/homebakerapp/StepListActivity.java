@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.android.homebakerapp.model.Recipe;
+import com.example.android.homebakerapp.model.Step;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -21,6 +22,8 @@ import android.widget.TextView;
 
 import com.example.android.homebakerapp.dummy.DummyContent;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,6 +44,8 @@ public class StepListActivity extends AppCompatActivity {
 
     // New Recipe object to retrieve recipe details from Intent
     private Recipe clickedRecipeObj = new Recipe();
+    // New Step arraylist that holds steps of recipe
+    private List<Step> mRecipeSteps = new ArrayList<Step>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +54,17 @@ public class StepListActivity extends AppCompatActivity {
         // Get intent from RecipeDetailsActivity
         Intent recipeClickedIntent = getIntent();
         if (recipeClickedIntent.hasExtra(getResources().getString(R.string.recipe_object_label))) {
+
             clickedRecipeObj = (Recipe) getIntent().getSerializableExtra(getResources().getString(R.string.recipe_object_label));
+            mRecipeSteps = clickedRecipeObj.getSteps();
             Log.i("INTENT", clickedRecipeObj.getName());
             //populateUI(); // populates with recipe obj. data
+
+            for (Step step : mRecipeSteps) {
+                Log.i("STEP", "STEP: " + step.getShortDescription() + " " + step.getDescription() + " " +
+                        step.getId() + " " + step.getLocalId());
+            }
+
         }
 
         setContentView(R.layout.activity_step_list);
@@ -59,14 +72,14 @@ public class StepListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         setTitle(clickedRecipeObj.getName() + ": " + toolbar.getTitle());
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
 
         if (findViewById(R.id.step_detail_container) != null) {
             // The detail container view will be present only in the
@@ -82,22 +95,22 @@ public class StepListActivity extends AppCompatActivity {
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, DummyContent.ITEMS, mTwoPane));
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, mRecipeSteps, mTwoPane));
     }
 
     public static class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
         private final StepListActivity mParentActivity;
-        private final List<DummyContent.DummyItem> mValues;
+        private final List<Step> mValues;
         private final boolean mTwoPane;
         private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DummyContent.DummyItem item = (DummyContent.DummyItem) view.getTag();
+                Step step = (Step) view.getTag();
                 if (mTwoPane) {
                     Bundle arguments = new Bundle();
-                    arguments.putString(StepDetailFragment.ARG_ITEM_ID, item.id);
+                    arguments.putSerializable(view.getContext().getResources().getString(R.string.ARG_ITEM_ID), (Serializable) step);
                     StepDetailFragment fragment = new StepDetailFragment();
                     fragment.setArguments(arguments);
                     mParentActivity.getSupportFragmentManager().beginTransaction() // FRAGMENT SETUP, also check https://www.youtube.com/watch?v=NpzC9UhCMik
@@ -106,7 +119,7 @@ public class StepListActivity extends AppCompatActivity {
                 } else {
                     Context context = view.getContext();
                     Intent intent = new Intent(context, StepDetailActivity.class);
-                    intent.putExtra(StepDetailFragment.ARG_ITEM_ID, item.id);
+                    intent.putExtra(view.getContext().getResources().getString(R.string.ARG_ITEM_ID), step);
 
                     context.startActivity(intent);
                 }
@@ -114,9 +127,9 @@ public class StepListActivity extends AppCompatActivity {
         };
 
         SimpleItemRecyclerViewAdapter(StepListActivity parent,
-                                      List<DummyContent.DummyItem> items,
+                                      List<Step> steps,
                                       boolean twoPane) {
-            mValues = items;
+            mValues = steps;
             mParentActivity = parent;
             mTwoPane = twoPane;
         }
@@ -130,8 +143,8 @@ public class StepListActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.mIdView.setText(mValues.get(position).id);
-            holder.mContentView.setText(mValues.get(position).content);
+            holder.mIdView.setText(String.valueOf(mValues.get(position).getId()+1)); // step id's start from 0
+            holder.mContentView.setText(mValues.get(position).getShortDescription());
 
             holder.itemView.setTag(mValues.get(position));
             holder.itemView.setOnClickListener(mOnClickListener);
@@ -153,8 +166,6 @@ public class StepListActivity extends AppCompatActivity {
             }
         }
     }
-
-
 
     private void populateUI() {
 
