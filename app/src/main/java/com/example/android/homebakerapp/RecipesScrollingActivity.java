@@ -2,6 +2,7 @@ package com.example.android.homebakerapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,10 +30,12 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,11 +68,20 @@ public class RecipesScrollingActivity extends AppCompatActivity implements MainR
     // Create a variable to store a reference to the RecyclerView where recipe images or placeholders will appear
     private RecyclerView recyclerView;
 
+    // Create a variable to store a reference to CollapsingToolbarLayout
+    private CollapsingToolbarLayout toolBarLayout;
+
+    // Create a variable to store a reference to Search widget
+    private SearchView searchView;
+
     // Member variable for the Database
     private AppDatabase mDb;
 
     // Flag needed to switch between 'fav' icons on menu
     private Boolean flagFavRecipesLoaded = false;
+
+    // Flag needed to hide title when search widget is displayed
+    private Boolean flagIsTitleEnabled = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,11 +99,20 @@ public class RecipesScrollingActivity extends AppCompatActivity implements MainR
 
         mDb = AppDatabase.getInstance(getApplicationContext());
 
+        Typeface dSFont = Typeface.createFromAsset(mContext.getAssets(), "lemonada_font_asset.ttf");
+
         setContentView(R.layout.activity_scrolling);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        CollapsingToolbarLayout toolBarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
-        toolBarLayout.setTitle(getTitle());
+        toolBarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
+        //toolBarLayout.setTitle("test");
+        // REF. https://stackoverflow.com/questions/31738831/how-to-change-collapsingtoolbarlayout-typeface-and-size
+        toolBarLayout.setCollapsedTitleGravity(Gravity.CENTER_VERTICAL);
+        toolBarLayout.setExpandedTitleGravity(Gravity.CENTER_VERTICAL);
+        toolBarLayout.setCollapsedTitleTypeface(dSFont);
+        toolBarLayout.setExpandedTitleTypeface(dSFont);
+
+        searchView = (SearchView) findViewById(R.id.toolbar_search);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -223,7 +244,7 @@ public class RecipesScrollingActivity extends AppCompatActivity implements MainR
     }
 
 
-//    @RequiresApi(api = Build.VERSION_CODES.N)
+    //    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -258,7 +279,18 @@ public class RecipesScrollingActivity extends AppCompatActivity implements MainR
                 return true;
 
             case R.id.action_search:
-                // @TODO
+                if (flagIsTitleEnabled) {
+                    setTitle("");
+                    searchView.setVisibility(View.VISIBLE);
+                    toolBarLayout.setTitle("");
+                    flagIsTitleEnabled = false;
+                } else {
+                    searchView.setVisibility(View.INVISIBLE);
+                    toolBarLayout.setTitle(mContext.getResources().getString(R.string.app_name));
+                    flagIsTitleEnabled = true;
+                }
+                Log.i("flagIsTitleEnabled", "flagIsTitleEnabled: " + flagIsTitleEnabled.toString());
+                // Hide title when search widget is displayed
                 return true;
         }
 

@@ -19,9 +19,20 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
+            app:collapsedTitleGravity="center_vertical"
+            app:expandedTitleGravity="center_vertical"
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:toolbarId="@+id/toolbar">
+
+
+            <!-- Background image -->
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alpha=".2"
+                android:scaleType="fitEnd"
+                android:src="@drawable/maize_icon_vector" />
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -30,18 +41,30 @@
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
 
+<!--            Code below can be used to display custom title -->
+
+<!--            <TextView-->
+<!--                android:id="@+id/custom_title"-->
+<!--                android:layout_width="100dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="TEST TEST TEST"-->
+<!--                android:textColor="#FFFFFF"-->
+<!--                android:textSize="20sp"-->
+<!--                android:textStyle="bold"-->
+<!--                android:fontFamily="sans-serif-smallcaps" />-->
+
             <SearchView
-                android:layout_width="match_parent"
+                android:id="@+id/toolbar_search"
+                android:layout_width="250dp"
                 android:layout_height="50dp"
                 android:layout_gravity="bottom"
                 android:background="#000000"
+                android:elevation="1dp"
+                android:visibility="invisible"
                 android:gravity="bottom" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
-        <SearchView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <include layout="@layout/content_scrolling" />
