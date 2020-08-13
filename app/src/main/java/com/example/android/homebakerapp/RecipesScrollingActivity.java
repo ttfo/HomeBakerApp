@@ -99,7 +99,8 @@ public class RecipesScrollingActivity extends AppCompatActivity implements MainR
 
         mDb = AppDatabase.getInstance(getApplicationContext());
 
-        Typeface dSFont = Typeface.createFromAsset(mContext.getAssets(), "lemonada_font_asset.ttf");
+        // font for title
+        Typeface dSFont = Typeface.createFromAsset(mContext.getAssets(), "pacifico_font_asset.ttf");
 
         setContentView(R.layout.activity_scrolling);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -113,6 +114,45 @@ public class RecipesScrollingActivity extends AppCompatActivity implements MainR
         toolBarLayout.setExpandedTitleTypeface(dSFont);
 
         searchView = (SearchView) findViewById(R.id.toolbar_search);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            // Get matching results of search and return them in adapter
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if (query.length() > 2 && query.length() < 20) {
+                    Log.i("SEARCH", "onQueryTextSubmit");
+                    callSearch(query);
+                } else {
+                    Toast.makeText(getApplicationContext(), mContext.getResources()
+                            .getString(R.string.query_not_long_enough), Toast.LENGTH_SHORT).show();
+                    Log.i("SEARCH", "QUERY TOO SHORT OR TOO LONG");
+                }
+
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (newText.length() > 2 && newText.length() < 20) {
+                    Log.i("SEARCH", "onQueryTextChange");
+                    callSearch(newText);
+                } 
+                return true;
+            }
+
+            public void callSearch(String query) {
+                Log.i("SEARCH", query);
+                List<Recipe> recipesMatch = new ArrayList<Recipe>();
+                for (Recipe recipe : data) {
+                    Log.i("SEARCH", "For loop: " + recipe.getName());
+                    if (recipe.getName().toLowerCase().contains(query.toLowerCase())) {
+                        Log.i("SEARCH", "For loop(IF): " + recipe.getName());
+                        recipesMatch.add(recipe);
+                    }
+                }
+                adapterSetUp(mContext, (ArrayList<Recipe>) recipesMatch);
+            }
+
+        });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -120,10 +160,9 @@ public class RecipesScrollingActivity extends AppCompatActivity implements MainR
             public void onClick(View view) {
                 Snackbar.make(view, "@TODO Launch create new recipe activity", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-                // TODO open favourite list on button click
 
-                adapterSetUp(mContext, data);
-                Log.i("BUTTON_CLICK", data.toString());
+//                adapterSetUp(mContext, data);
+//                Log.i("BUTTON_CLICK", data.toString());
 
             }
         });
@@ -280,13 +319,13 @@ public class RecipesScrollingActivity extends AppCompatActivity implements MainR
 
             case R.id.action_search:
                 if (flagIsTitleEnabled) {
-                    setTitle("");
                     searchView.setVisibility(View.VISIBLE);
                     toolBarLayout.setTitle("");
                     flagIsTitleEnabled = false;
                 } else {
                     searchView.setVisibility(View.INVISIBLE);
                     toolBarLayout.setTitle(mContext.getResources().getString(R.string.app_name));
+                    adapterSetUp(mContext, data); // re-load all recipes when moving away from 'search'
                     flagIsTitleEnabled = true;
                 }
                 Log.i("flagIsTitleEnabled", "flagIsTitleEnabled: " + flagIsTitleEnabled.toString());
