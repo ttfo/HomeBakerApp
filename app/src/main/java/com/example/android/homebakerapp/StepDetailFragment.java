@@ -41,6 +41,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.net.URI;
@@ -59,8 +60,8 @@ public class StepDetailFragment extends Fragment implements Player.EventListener
     private Step mStep;
     private SimpleExoPlayer mExoPlayer;
     private PlayerView mPlayerView;
-    private LinearLayout mLL;
-    private NotificationManager mNotificationManager;
+    private RelativeLayout mRL;
+//    private NotificationManager mNotificationManager;
     private static MediaSessionCompat mMediaSession;
     private PlaybackStateCompat.Builder mStateBuilder;
 
@@ -73,7 +74,7 @@ public class StepDetailFragment extends Fragment implements Player.EventListener
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.step_detail, container, false);
 
-        mLL = (LinearLayout) rootView.findViewById(R.id.step_detail_ll);
+        mRL = (RelativeLayout) rootView.findViewById(R.id.step_detail_rl);
         mPlayerView = (PlayerView) rootView.findViewById(R.id.step_video);
 
         // Show the dummy content as text in a TextView.
@@ -122,7 +123,7 @@ public class StepDetailFragment extends Fragment implements Player.EventListener
     private void initializeMediaSession() {
 
         // Create a MediaSessionCompat.
-        mMediaSession = new MediaSessionCompat(mLL.getContext(), TAG);
+        mMediaSession = new MediaSessionCompat(mRL.getContext(), TAG);
 
         // Enable callbacks from MediaButtons and TransportControls.
         mMediaSession.setFlags(
@@ -195,15 +196,15 @@ public class StepDetailFragment extends Fragment implements Player.EventListener
             // Create an instance of the ExoPlayer.
             Activity activity = getActivity(); // if you are in a fragment
             // Or,   activity = YourActivity.this;      if you are in an Activity
-            SimpleExoPlayer mExoPlayer = new SimpleExoPlayer.Builder(activity).build();
+            mExoPlayer = new SimpleExoPlayer.Builder(activity).build();
             mPlayerView.setPlayer(mExoPlayer);
 
             // Set the ExoPlayer.EventListener to this activity.
             mExoPlayer.addListener(this);
             // For the rest of the code in this method, ref.
             // Produces DataSource instances through which media data is loaded.
-            DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(mLL.getContext(),
-                    Util.getUserAgent(mLL.getContext(), "Home Baker App"));
+            DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(mRL.getContext(),
+                    Util.getUserAgent(mRL.getContext(), "Home Baker App"));
             // This is the MediaSource representing the media to be played.
             MediaSource videoSource =
                     new ProgressiveMediaSource.Factory(dataSourceFactory)
@@ -218,7 +219,7 @@ public class StepDetailFragment extends Fragment implements Player.EventListener
      * Release ExoPlayer.
      */
     private void releasePlayer() {
-        mNotificationManager.cancelAll();
+//        mNotificationManager.cancelAll();
         mExoPlayer.stop();
         mExoPlayer.release();
         mExoPlayer = null;
