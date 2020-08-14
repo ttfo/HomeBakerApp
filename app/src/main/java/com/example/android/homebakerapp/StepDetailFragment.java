@@ -1,31 +1,20 @@
 package com.example.android.homebakerapp;
 
 import android.app.Activity;
-import android.app.NotificationManager;
 import android.net.Uri;
 import android.os.Bundle;
 
 import com.example.android.homebakerapp.model.Step;
-import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
-import com.google.android.exoplayer2.ExoPlayer;
-import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.RenderersFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
-import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
-import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
@@ -39,12 +28,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import java.net.URI;
 
 /**
  * A fragment representing a single Step detail screen.
@@ -60,7 +45,7 @@ public class StepDetailFragment extends Fragment implements Player.EventListener
     private Step mStep;
     private SimpleExoPlayer mExoPlayer;
     private PlayerView mPlayerView;
-    private RelativeLayout mRL;
+    private LinearLayout mLL;
 //    private NotificationManager mNotificationManager;
     private static MediaSessionCompat mMediaSession;
     private PlaybackStateCompat.Builder mStateBuilder;
@@ -74,7 +59,7 @@ public class StepDetailFragment extends Fragment implements Player.EventListener
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.step_detail, container, false);
 
-        mRL = (RelativeLayout) rootView.findViewById(R.id.step_detail_rl);
+        mLL = (LinearLayout) rootView.findViewById(R.id.step_detail_ll);
         mPlayerView = (PlayerView) rootView.findViewById(R.id.step_video);
 
         // Show the dummy content as text in a TextView.
@@ -123,7 +108,7 @@ public class StepDetailFragment extends Fragment implements Player.EventListener
     private void initializeMediaSession() {
 
         // Create a MediaSessionCompat.
-        mMediaSession = new MediaSessionCompat(mRL.getContext(), TAG);
+        mMediaSession = new MediaSessionCompat(mLL.getContext(), TAG);
 
         // Enable callbacks from MediaButtons and TransportControls.
         mMediaSession.setFlags(
@@ -203,8 +188,8 @@ public class StepDetailFragment extends Fragment implements Player.EventListener
             mExoPlayer.addListener(this);
             // For the rest of the code in this method, ref.
             // Produces DataSource instances through which media data is loaded.
-            DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(mRL.getContext(),
-                    Util.getUserAgent(mRL.getContext(), "Home Baker App"));
+            DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(mLL.getContext(),
+                    Util.getUserAgent(mLL.getContext(), "Home Baker App"));
             // This is the MediaSource representing the media to be played.
             MediaSource videoSource =
                     new ProgressiveMediaSource.Factory(dataSourceFactory)
