@@ -1,6 +1,7 @@
 package com.example.android.homebakerapp;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -19,6 +20,7 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.squareup.picasso.Picasso;
 
 import androidx.fragment.app.Fragment;
 
@@ -28,8 +30,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * A fragment representing a single Step detail screen.
@@ -45,6 +50,9 @@ public class StepDetailFragment extends Fragment implements Player.EventListener
     private Step mStep;
     private SimpleExoPlayer mExoPlayer;
     private PlayerView mPlayerView;
+    private Button youTubeButton;
+    private ImageView thumbnailIv;
+    private TextView noMediaTv;
     private LinearLayout mLL;
 //    private NotificationManager mNotificationManager;
     private static MediaSessionCompat mMediaSession;
@@ -61,18 +69,54 @@ public class StepDetailFragment extends Fragment implements Player.EventListener
 
         mLL = (LinearLayout) rootView.findViewById(R.id.step_detail_ll);
         mPlayerView = (PlayerView) rootView.findViewById(R.id.step_video);
+        youTubeButton = (Button) rootView.findViewById(R.id.go_to_youtube_button);
+        thumbnailIv = (ImageView)  rootView.findViewById(R.id.step_thumbnail_iv);
+        noMediaTv = (TextView)  rootView.findViewById(R.id.no_media_content_tv);
 
-        // Show the dummy content as text in a TextView.
+        // JUST FOR TESTING
+        // Scenario 1: video not available, thumbnail loads
+//        mStep.setThumbnailURL("https://thumbs.dreamstime.com/z/child-eating-big-bread-young-pretty-baby-girl-huge-loaf-55745702.jpg");
+//        mStep.setVideoURL("");
+        // Scenario 2: youtube button loads
+//        mStep.setVideoURL("https://www.youtube.com/watch?v=boZGPvQ3hLs");
+        //Scenario 3: 'ne media' message loads
+//        mStep.setVideoURL("");
+//        mStep.setThumbnailURL("");
+
+        // Show the step description as text in a TextView.
         if (mStep != null) {
             ((TextView) rootView.findViewById(R.id.step_description)).setText(mStep.getDescription());
-            // ((ImageView) rootView.findViewById(R.id.step_thumbnail)).setText(mStep.getThumbnailURL()); // @TODO need to fix
-            //((PlayerView) rootView.findViewById(R.id.step_video)).setText(mStep.getVideoURL()); // @TODO need to fix
-        }
 
-        // Initialize the Media Session.
-        initializeMediaSession();
-        // Init Exo Player
-        initializePlayer(Uri.parse(mStep.getVideoURL()));
+            if (!mStep.getVideoURL().isEmpty()) {
+
+                if (mStep.getVideoURL().contains("youtube.com")) {
+                    youTubeButton.setVisibility(View.VISIBLE);
+                    youTubeButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view)
+                        {
+                            openWebPage(mStep.getVideoURL());
+                        }
+                    });
+                } else {
+                    mPlayerView.setVisibility(View.VISIBLE);
+                    initializeMediaSession();
+                    // Init Exo Player
+                    initializePlayer(Uri.parse(mStep.getVideoURL()));
+                }
+
+            } else if (!mStep.getThumbnailURL().isEmpty()) {
+                thumbnailIv.setVisibility(View.VISIBLE);
+                Picasso.with(thumbnailIv.getContext())
+                        .load(mStep.getThumbnailURL())
+                        .into(thumbnailIv);
+            } else {
+                noMediaTv.setVisibility(View.VISIBLE);
+            }
+
+        } else {
+            noMediaTv.setVisibility(View.VISIBLE);
+        }
 
         return rootView;
     }
@@ -165,8 +209,10 @@ public class StepDetailFragment extends Fragment implements Player.EventListener
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        releasePlayer();
-        mMediaSession.setActive(false);
+        if (mExoPlayer != null) {
+            releasePlayer();
+            mMediaSession.setActive(false);
+        }
     }
 
     /**
@@ -208,6 +254,19 @@ public class StepDetailFragment extends Fragment implements Player.EventListener
         mExoPlayer.stop();
         mExoPlayer.release();
         mExoPlayer = null;
+    }
+
+
+    /**
+     * This method fires off an implicit Intent to open a webpage.
+     */
+    public void openWebPage(String url) {
+        Uri webpage = Uri.parse(url);
+        Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
+
+        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivity(intent);
+        }
     }
 
 

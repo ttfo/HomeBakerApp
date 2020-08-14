@@ -177,10 +177,6 @@ public class RecipesScrollingActivity extends AppCompatActivity implements MainR
 
         adapterSetUp(mContext, data); // also called from onPostExecute, so that data loads when app is launched
 
-        // TODO show more columns if on tablet
-        // NOTE: MIGHT NEED TO SET UP IN ADAPTERSETUP
-        // REF. https://stackoverflow.com/questions/29579811/changing-number-of-columns-with-gridlayoutmanager-and-recyclerview/32877124
-
     }
 
 
@@ -386,7 +382,8 @@ public class RecipesScrollingActivity extends AppCompatActivity implements MainR
         recyclerView.setAdapter(adapter);
 
         // set up the RecyclerView layout
-        int numberOfColumns = 2;
+        // desired value of columns is retrieved from dimens.xml
+        int numberOfColumns = getResources().getInteger(R.integer.recipe_scroll_columns);;
         recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
 
     }

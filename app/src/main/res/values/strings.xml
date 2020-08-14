@@ -27,6 +27,7 @@
 
     <string name="error_message_generic">Failed to get results. Please try again!</string>
     <string name="query_not_long_enough">Your query should have between 3 and 20 characters</string>
+    <string name="no_media">No media content available.</string>
 
     <!--    Settings options    -->
 
@@ -70,5 +71,6 @@
 
     <!--    Steps activity and fragments    -->
     <string name="ARG_ITEM_ID">item_id</string>
+    <string name="open_video_on_youtube">Open video on YouTube</string>
 
 </resources>
