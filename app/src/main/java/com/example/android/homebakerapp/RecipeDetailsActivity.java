@@ -214,10 +214,16 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                 if (clickedRecipeObj.isFavourite()) {
                     // on click loads second fragment with editable details (notes, ingredients)
                     // only possible if recipe is stored locally (needs to be in 'fav' list)
-                    secondFragment.setArguments(mRecipeObjBundle);
-                    getSupportFragmentManager().beginTransaction() // FRAGMENT SETUP, also check https://www.youtube.com/watch?v=NpzC9UhCMik
-                            .replace(R.id.recipe_detail_container, secondFragment) // load fragment into container view (in content_recipe_details.xml)
-                            .commit();
+
+                    // @TODO set up edit page
+//                    secondFragment.setArguments(mRecipeObjBundle);
+//                    getSupportFragmentManager().beginTransaction() // FRAGMENT SETUP, also check https://www.youtube.com/watch?v=NpzC9UhCMik
+//                            .replace(R.id.recipe_detail_container, secondFragment) // load fragment into container view (in content_recipe_details.xml)
+//                            .commit();
+
+                    Snackbar.make(view, "@TODO set up edit page", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
                 } else {
                     Snackbar.make(view, "Add recipe to fav list to unlock editing", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
