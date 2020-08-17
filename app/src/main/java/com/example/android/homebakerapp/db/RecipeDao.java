@@ -1,7 +1,6 @@
 package com.example.android.homebakerapp.db;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -22,6 +21,21 @@ public interface RecipeDao {
 
     @Query("SELECT * FROM recipes ORDER BY local_id")
     LiveData<List<Recipe>> loadAllRecipes();
+
+    @Query("SELECT * FROM recipes ORDER BY local_id")
+    List<Recipe> loadAllRecipesSync();
+
+    // @TODO NEED TO RETURN A RecipeWithDetails OBJ
+    // ALSO CHECK: https://stackoverflow.com/questions/60363574/map-new-pojo-class-with-lesser-fields-to-an-existing-room-table
+    // @Query("SELECT SUM(stepCount) as total, AVG(stepCount) as average FROM userFitnessDailyRecords where forDay BETWEEN :startDay AND :endDay ORDER BY forDay ASC")
+//    @Query("SELECT r.*, im.* " +
+//            "FROM recipes r " +
+//            "LEFT JOIN " +
+//            "(SELECT i.*, m.* FROM ingredients i " +
+//            "LEFT JOIN measures m ON i.local_id = m.ingredient_id ORDER BY i.local_id) AS im " +
+//            "ON r.local_id = im.recipe_id ORDER BY r.local_id")
+//
+//    List<RecipeWithDetails> loadAllRecipesSync(); // Synchronous access for use in widget
 
     @Insert
     void insertRecipe(Recipe recipe);

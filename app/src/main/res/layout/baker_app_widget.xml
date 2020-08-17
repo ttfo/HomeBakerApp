@@ -1,0 +1,46 @@
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="306dp"
+    android:layout_height="76dp"
+    android:background="@drawable/border" >
+
+<LinearLayout
+    android:layout_width="300dp"
+    android:layout_height="70dp"
+    android:layout_margin="3dp"
+    android:padding="@dimen/widget_margin"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/appwidget_button"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:background="#D1C4E9"
+        android:gravity="center"
+        android:text="a_random_recipe"
+        android:textStyle="bold|italic"
+        android:textSize="15sp" />
+
+    <ImageView
+        android:id="@+id/appwidget_iv"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:background="#D1C4E9"
+        android:gravity="center"
+        android:src="@drawable/hba" />
+    </LinearLayout>
+    <!--    <TextView-->
+<!--        android:id="@+id/appwidget_text"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:layout_centerVertical="true"-->
+<!--        android:layout_margin="8dp"-->
+<!--        android:background="#09C"-->
+<!--        android:contentDescription="@string/appwidget_text"-->
+<!--        android:text="@string/appwidget_text"-->
+<!--        android:textColor="#ffffff"-->
+<!--        android:textSize="24sp"-->
+<!--        android:textStyle="bold|italic" />-->
+
+</LinearLayout>
